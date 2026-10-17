@@ -885,7 +885,7 @@
           <div class="form-group">
             <label for="set-gemini-model">Gemini 模型選擇</label>
             <select id="set-gemini-model">
-              <option value="gemini-2.5-flash" selected>gemini-2.5-flash（推薦：速度快、成本極低）</option>
+              <option value="gemini-3.8-flash" selected>gemini-3.8-flash（推薦：速度快、成本極低）</option>
               <option value="gemini-2.5-pro">gemini-2.5-pro（深度推理與長篇閱讀）</option>
               <option value="gemini-2.0-flash">gemini-2.0-flash</option>
             </select>
@@ -1408,7 +1408,7 @@
         ],
         csvUrl: DEFAULT_SHEET_CSV,
         geminiApiKey: "",
-        geminiModel: "gemini-2.5-flash"
+        geminiModel: "gemini-3.8-flash"
       },
       plan: [],
       questions: [...BUILTIN_QUESTIONS],
@@ -1504,7 +1504,7 @@
       document.getElementById("set-target-score").value = state.settings.targetScore;
       document.getElementById("set-csv-url").value = state.settings.csvUrl || DEFAULT_SHEET_CSV;
       document.getElementById("set-gemini-key").value = state.settings.geminiApiKey || "";
-      document.getElementById("set-gemini-model").value = state.settings.geminiModel || "gemini-2.5-flash";
+      document.getElementById("set-gemini-model").value = state.settings.geminiModel || "gemini-3.8-flash";
 
       document.querySelectorAll("#weekday-pills .pill-checkbox").forEach(cb => {
         cb.checked = state.settings.studyDays.includes(Number(cb.value));
@@ -2081,7 +2081,7 @@
 
       const part = document.getElementById("ai-gen-part").value;
       const diff = document.getElementById("ai-gen-diff").value;
-      const model = state.settings.geminiModel || "gemini-2.5-flash";
+      const model = state.settings.geminiModel || "gemini-3.8-flash";
       const statusEl = document.getElementById("ai-gen-status");
       const btn = document.getElementById("btn-ai-generate");
 
