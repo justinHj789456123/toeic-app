@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>多益 TOEIC 600分 AI 備考神器</title>
+  <style>
+    :root {
+      --navy-900: #0F233C;
+      --navy-800: #1B365D;
+      --navy-700: #274B7A;
+      --navy-600: #356096;
+      --navy-100: #E6EEF8;
+      --warm-bg: #FAF7F2;
+      --warm-card: #FFFFFF;
+      --warm-surface: #F3EFE6;
+      --warm-border: #E2DDD2;
+      --accent-gold: #C88A2B;
+      --accent-gold-light: #FDF6E9;
+      --success: #1E7E48;
+      --success-bg: #E9F7EF;
+      --danger: #C0392B;
+      --danger-bg: #FDEDEC;
+      --text-main: #1C2833;
+      --text-muted: #5D6D7E;
+      --shadow-sm: 0 2px 8px rgba(15, 35, 60, 0.06);
+      --shadow-md: 0 6px 20px rgba(15, 35, 60, 0.10);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--warm-bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header & Navigation */
+    header {
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
+      color: #FFF;
+      padding: 1.1rem 1.5rem 0;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding-bottom: 0.9rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-badge {
+      background: var(--accent-gold);
+      color: #FFF;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 0.85rem;
+      font-size: 0.88rem;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    .header-stats span strong {
+      color: #FFD180;
+    }
+
+    nav.tabs {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.35rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav.tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.75);
+      border: none;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.96rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tab-btn:hover {
+      color: #FFF;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .tab-btn.active {
+      color: #FFF;
+      border-bottom-color: #FFD180;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .badge-count {
+      background: rgba(255, 209, 128, 0.25);
+      color: #FFD180;
+      font-size: 0.75rem;
+      padding: 0.05rem 0.45rem;
+      border-radius: 999px;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1120px;
+      width: 100%;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1.25rem;
+      flex: 1;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.22s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Layout */
+    .card {
+      background: var(--warm-card);
+      border: 1px solid var(--warm-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.25rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--warm-surface);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy-800);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.15rem;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--warm-card);
+      border: 1px solid var(--warm-border);
+      border-left: 4px solid var(--navy-800);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card.gold { border-left-color: var(--accent-gold); }
+    .stat-card.success { border-left-color: var(--success); }
+    .stat-card.danger { border-left-color: var(--danger); }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-value {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--navy-900);
+    }
+
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Forms & Inputs */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--warm-border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: #FFF;
+      color: var(--text-main);
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--navy-700);
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.12);
+    }
+
+    /* Weekday & Unit Pills */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pill-checkbox {
+      display: none;
+    }
+
+    .pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--warm-border);
+      background: var(--warm-surface);
+      color: var(--text-main);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.18s;
+    }
+
+    .pill-checkbox:checked + .pill-label {
+      background: var(--navy-800);
+      color: #FFF;
+      border-color: var(--navy-800);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.94rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--navy-800);
+      color: #FFF;
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-700);
+    }
+
+    .btn-gold {
+      background: var(--accent-gold);
+      color: #FFF;
+    }
+
+    .btn-gold:hover {
+      background: #b17822;
+    }
+
+    .btn-outline {
+      background: #FFF;
+      color: var(--navy-800);
+      border: 1px solid var(--navy-800);
+    }
+
+    .btn-outline:hover {
+      background: var(--navy-100);
+    }
+
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid rgba(192, 57, 43, 0.25);
+    }
+
+    .btn-danger:hover {
+      background: #fadbd8;
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.84rem;
+    }
+
+    /* Task & Plan Items */
+    .plan-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--warm-border);
+      border-radius: 10px;
+      margin-bottom: 0.65rem;
+      background: #FFF;
+      transition: all 0.15s;
+    }
+
+    .plan-item.completed {
+      background: var(--warm-surface);
+      opacity: 0.78;
+    }
+
+    .plan-item.completed .plan-title {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .plan-item.is-today {
+      border-left: 4px solid var(--accent-gold);
+      background: var(--accent-gold-light);
+    }
+
+    .plan-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .plan-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--navy-800);
+      cursor: pointer;
+    }
+
+    .plan-date {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--navy-700);
+      min-width: 105px;
+    }
+
+    .plan-title {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.18rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--navy-100);
+      color: var(--navy-800);
+    }
+
+    .tag.mock {
+      background: #FCE8E6;
+      color: #C0392B;
+    }
+
+    .tag.gold {
+      background: var(--accent-gold-light);
+      color: #9A671A;
+    }
+
+    /* Quiz / Mock Exam */
+    .question-box {
+      border: 1px solid var(--warm-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1.15rem;
+      background: #FFF;
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .question-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--navy-900);
+      margin-bottom: 1rem;
+      white-space: pre-line;
+    }
+
+    .options-list {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--warm-border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: var(--warm-bg);
+    }
+
+    .option-label:hover {
+      border-color: var(--navy-600);
+      background: var(--navy-100);
+    }
+
+    .option-label.correct {
+      background: var(--success-bg);
+      border-color: var(--success);
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .option-label.wrong {
+      background: var(--danger-bg);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .explanation-box {
+      margin-top: 0.9rem;
+      padding: 0.9rem 1rem;
+      border-radius: 8px;
+      background: var(--warm-surface);
+      border-left: 4px solid var(--navy-700);
+      font-size: 0.92rem;
+    }
+
+    /* Notice Banner */
+    .notice {
+      padding: 0.85rem 1.1rem;
+      border-radius: 8px;
+      background: var(--navy-100);
+      color: var(--navy-900);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .timer-badge {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--navy-800);
+      background: var(--warm-surface);
+      padding: 0.35rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid var(--warm-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--warm-border);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--warm-surface);
+      color: var(--navy-900);
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.25rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--warm-border);
+      background: #FFF;
+    }
+
+    @media (max-width: 640px) {
+      .header-top { flex-direction: column; align-items: flex-start; }
+      .plan-item { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="brand">
+        <span class="brand-badge">TOEIC 600</span>
+        <h1>多益 AI 備考神器</h1>
+      </div>
+      <div class="header-stats">
+        <span>距離考試：<strong id="hdr-days-left">--</strong> 天</span>
+        <span>目標：<strong id="hdr-target-score">600</strong> 分</span>
+        <span>題庫：<strong id="hdr-q-count">30</strong> 題</span>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button class="tab-btn active" onclick="switchTab('today')">📅 今日</button>
+      <button class="tab-btn" onclick="switchTab('plan')">🗺️ 計畫</button>
+      <button class="tab-btn" onclick="switchTab('mock')">📝 模擬考</button>
+      <button class="tab-btn" onclick="switchTab('wrong')">📕 錯題本 <span class="badge-count" id="nav-wrong-count">0</span></button>
+      <button class="tab-btn" onclick="switchTab('bank')">📚 題庫 <span class="badge-count" id="nav-bank-count">30</span></button>
+      <button class="tab-btn" onclick="switchTab('settings')">⚙️ 設定</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. 今日 (TODAY) -->
+    <section id="tab-today" class="tab-panel active">
+      <div class="grid-4">
+        <div class="stat-card">
+          <div class="stat-label">距離多益考試</div>
+          <div class="stat-value" id="td-days-left">-- 天</div>
+          <div class="stat-sub" id="td-exam-date-label">考試日期：--</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">目前程度 → 目標分數</div>
+          <div class="stat-value" id="td-score-gap">450 → 600</div>
+          <div class="stat-sub" id="td-daily-mins">每日預計學習 60 分鐘</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-label">落後進度任務</div>
+          <div class="stat-value" id="td-behind-count">0 項</div>
+          <div class="stat-sub" id="td-behind-hint">進度良好，繼續保持！</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-label">最近一次模考正確率</div>
+          <div class="stat-value" id="td-last-score">尚未測驗</div>
+          <div class="stat-sub" id="td-total-exams">累計完成 0 次模擬考</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🎯 今日學習任務（<span id="td-today-date"></span>）</div>
+          <div>
+            <button class="btn btn-primary btn-sm" onclick="switchTab('mock')">⚡ 立即測驗 5 題</button>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('plan')">檢視完整計畫</button>
+          </div>
+        </div>
+        <div id="td-task-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📊 近期模擬考紀錄</div>
+        </div>
+        <div id="td-history-list"></div>
+      </div>
+    </section>
+
+    <!-- 2. 計畫 (PLAN) -->
+    <section id="tab-plan" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">🗺️ 專屬多益 600 分讀書計畫表</div>
+            <p class="form-hint">系統依據您的考試日期、每週可讀書日與弱項單元，自動安排「平日核心訓練 + 定期模擬考檢視」。</p>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="generateStudyPlan(true)">🔄 重新生成計畫</button>
+          </div>
+        </div>
+        <div class="notice">
+          <span id="plan-summary-text">已完成 0 / 0 項任務（完成率 0%）</span>
+          <span style="font-size:0.82rem; color:var(--text-muted);">💡 勾選完成後會自動同步至「今日」儀表板</span>
+        </div>
+        <div id="plan-list-container"></div>
+      </div>
+    </section>
+
+    <!-- 3. 模擬考 (MOCK EXAM) -->
+    <section id="tab-mock" class="tab-panel">
+      <div class="card" id="mock-setup-card">
+        <div class="card-header">
+          <div class="card-title">📝 多益模擬考測驗設定</div>
+          <span class="tag gold">步驟 4：測驗並檢視學習成果</span>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="mock-count">測驗題數</label>
+            <select id="mock-count">
+              <option value="5" selected>5 題（快速衝刺測驗 - 約 5 分鐘）</option>
+              <option value="10">10 題（日常單元檢視 - 約 10 分鐘）</option>
+              <option value="20">20 題（中量綜合模考 - 約 20 分鐘）</option>
+              <option value="30">30 題（完整題庫挑戰 - 約 30 分鐘）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mock-part">測驗單元範圍</label>
+            <select id="mock-part">
+              <option value="ALL">全部單元（綜合隨機出題）</option>
+              <option value="Part 5 句子填空">Part 5 句子填空（文法與商務單字）</option>
+              <option value="Part 6 段落填空">Part 6 段落填空（上下文與時態）</option>
+              <option value="Part 7 閱讀理解">Part 7 閱讀理解（信件、公告、廣告）</option>
+              <option value="Part 2 聽力應答">Part 2 聽力應答（問句與間接回應）</option>
+              <option value="Part 3 聽力對話情境">Part 3 聽力對話情境</option>
+              <option value="Part 4 聽力獨白情境">Part 4 聽力獨白情境</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:0.5rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="startMockExam(false)">🚀 開始模擬考</button>
+          <button class="btn btn-outline" onclick="startMockExam(true)">📕 從錯題本抽題測驗</button>
+        </div>
+      </div>
+
+      <div class="card" id="mock-active-card" style="display:none;">
+        <div class="card-header">
+          <div class="card-title" id="mock-exam-title">進行中：多益模擬考</div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <span class="timer-badge" id="mock-timer">00:00</span>
+            <button class="btn btn-outline btn-sm" onclick="cancelMockExam()">結束返回</button>
+          </div>
+        </div>
+        <div id="mock-result-banner" style="display:none;"></div>
+        <div id="mock-questions-container"></div>
+        <div style="margin-top:1.25rem; display:flex; gap:0.75rem; justify-content:flex-end;">
+          <button class="btn btn-primary" id="mock-submit-btn" onclick="submitMockExam()">✅ 交卷並看詳解</button>
+          <button class="btn btn-gold" id="mock-retry-btn" style="display:none;" onclick="resetMockView()">🔄 再測驗一次</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 錯題本 (WRONG ANSWERS) -->
+    <section id="tab-wrong" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📕 專屬錯題本（弱點加強循環）</div>
+            <p class="form-hint">所有在模擬考答錯的題目會自動收錄至此，方便您針對多益 600 分常考盲點反覆練習。</p>
+          </div>
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="startMockExam(true)">🎯 用錯題本進行模擬考</button>
+            <button class="btn btn-danger btn-sm" onclick="clearAllWrong()">清空錯題本</button>
+          </div>
+        </div>
+        <div id="wrong-list-container"></div>
+      </div>
+    </section>
+
+    <!-- 5. 題庫 (QUESTION BANK & GEMINI AI GENERATOR) -->
+    <section id="tab-bank" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">✨ 用 Gemini AI 立即出題（擴充題庫）</div>
+            <p class="form-hint">除了每日早上 6 點透過 Google Sheets 自動出題外，您也可以隨時在這裡請 Gemini 即時生成新題目。</p>
+          </div>
+          <span class="tag gold">Gemini API 驅動</span>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="ai-gen-part">選擇出題單元</label>
+            <select id="ai-gen-part">
+              <option value="Part 5 句子填空">Part 5 句子填空（文法、詞性、商務單字）</option>
+              <option value="Part 6 段落填空">Part 6 段落填空（短文克漏字）</option>
+              <option value="Part 7 閱讀理解">Part 7 閱讀理解（商務信件、公告、備忘錄）</option>
+              <option value="Part 2 聽力應答">Part 2 聽力應答（情境問答文字演練）</option>
+              <option value="Part 3 聽力對話情境">Part 3 聽力對話情境</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ai-gen-diff">選擇難度等級</label>
+            <select id="ai-gen-diff">
+              <option value="基礎衝刺 (450-550分)">基礎衝刺（450–550 分）</option>
+              <option value="600分核心" selected>目標核心（600 分必考高頻題）</option>
+              <option value="進階挑戰 (700-800分)">進階挑戰（700–800 分）</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+          <button class="btn btn-gold" id="btn-ai-generate" onclick="generateQuestionsWithGemini()">🤖 用 Gemini AI 出 5 題</button>
+          <button class="btn btn-outline" onclick="syncFromGoogleSheet()">🔄 從 Google 試算表同步最新題庫</button>
+          <span id="ai-gen-status" style="font-size:0.88rem; color:var(--navy-700); font-weight:600;"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📚 題庫總覽（共 <span id="bank-total-count">30</span> 題）</div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <input type="text" id="bank-search" placeholder="搜尋關鍵字、單字或題型..." oninput="renderQuestionBank()" style="width:220px;" />
+            <select id="bank-filter-part" onchange="renderQuestionBank()" style="width:180px;">
+              <option value="ALL">全部單元</option>
+              <option value="Part 5 句子填空">Part 5 句子填空</option>
+              <option value="Part 6 段落填空">Part 6 段落填空</option>
+              <option value="Part 7 閱讀理解">Part 7 閱讀理解</option>
+              <option value="Part 2 聽力應答">Part 2 聽力應答</option>
+              <option value="Part 3 聽力對話情境">Part 3 聽力對話情境</option>
+              <option value="Part 4 聽力獨白情境">Part 4 聽力獨白情境</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:70px;">ID</th>
+                <th style="width:135px;">單元 / 分類</th>
+                <th>題目與選項預覽</th>
+                <th style="width:75px;">正解</th>
+                <th style="width:280px;">中文詳解</th>
+              </tr>
+            </thead>
+            <tbody id="bank-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. 設定 (SETTINGS) -->
+    <section id="tab-settings" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">⚙️ 個人化備考設定（多益 TOEIC）</div>
+          <span class="tag">固定使用同一瀏覽器以保留學習紀錄</span>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="set-exam-date">目標考試日期</label>
+            <input type="date" id="set-exam-date" />
+            <div class="form-hint">系統會自動計算倒數天數並排定每日讀書計畫</div>
+          </div>
+          <div class="form-group">
+            <label for="set-daily-mins">每日可學習時間（分鐘）</label>
+            <input type="number" id="set-daily-mins" min="15" max="300" step="15" value="60" />
+          </div>
+          <div class="form-group">
+            <label for="set-current-score">目前預估分數</label>
+            <input type="number" id="set-current-score" min="10" max="990" step="5" value="450" />
+          </div>
+          <div class="form-group">
+            <label for="set-target-score">目標分數</label>
+            <input type="number" id="set-target-score" min="10" max="990" step="5" value="600" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:0.5rem;">
+          <label>每週可讀書日（點選切換，未勾選的日子不會排入計畫）</label>
+          <div class="pill-group" id="weekday-pills">
+            <label><input type="checkbox" class="pill-checkbox" value="1" checked><span class="pill-label">週一</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="2" checked><span class="pill-label">週二</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="3" checked><span class="pill-label">週三</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="4" checked><span class="pill-label">週四</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="5" checked><span class="pill-label">週五</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="6" checked><span class="pill-label">週六</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="0"><span class="pill-label">週日</span></label>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label>重點加強單元（讀書計畫將依勾選單元循環排課）</label>
+          <div class="pill-group" id="unit-pills">
+            <label><input type="checkbox" class="pill-checkbox" value="Part 5 句子填空（詞性與文法）" checked><span class="pill-label">Part 5 句子填空（詞性與文法）</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="Part 5 句子填空（商務高頻單字）" checked><span class="pill-label">Part 5 句子填空（商務高頻單字）</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="Part 6 段落填空（上下文與時態）" checked><span class="pill-label">Part 6 段落填空（上下文與時態）</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="Part 7 單篇閱讀（信件與公告）" checked><span class="pill-label">Part 7 單篇閱讀（信件與公告）</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="Part 2 聽力應答（問句與間接回答）" checked><span class="pill-label">Part 2 聽力應答</span></label>
+            <label><input type="checkbox" class="pill-checkbox" value="Part 3 & 4 聽力對話與獨白" checked><span class="pill-label">Part 3 & 4 聽力對話與獨白</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔗 雲端題庫（Google Sheets CSV）與 Gemini API 串接</div>
+        </div>
+        <div class="form-group">
+          <label for="set-csv-url">Google 試算表題庫連結（支援直接貼上試算表網址或發布後的 CSV 網址）</label>
+          <input type="text" id="set-csv-url" placeholder="https://docs.google.com/spreadsheets/d/..." />
+          <div class="form-hint">已預設綁定您的「多益題庫 (目標600分) - AI備考神器」雲端試算表；若您在試算表選擇「檔案 → 共用 → 發布到網路 → CSV」，也可貼上發布後的 CSV 連結。</div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="set-gemini-key">Gemini API Key（用於網頁即時 AI 出題）</label>
+            <input type="password" id="set-gemini-key" placeholder="貼上您的 AIzaSy... 金鑰（僅儲存於本機瀏覽器）" />
+            <div class="form-hint">可至 Google AI Studio (aistudio.google.com) 免費申請 API Key</div>
+          </div>
+          <div class="form-group">
+            <label for="set-gemini-model">Gemini 模型選擇</label>
+            <select id="set-gemini-model">
+              <option value="gemini-2.5-flash" selected>gemini-2.5-flash（推薦：速度快、成本極低）</option>
+              <option value="gemini-2.5-pro">gemini-2.5-pro（深度推理與長篇閱讀）</option>
+              <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:0.5rem;">
+          <button class="btn btn-primary" onclick="saveSettings()">💾 儲存設定並更新計畫</button>
+          <button class="btn btn-outline" onclick="syncFromGoogleSheet()">🔄 測試同步 Google 試算表題庫</button>
+          <button class="btn btn-outline" onclick="exportBackup()">📤 匯出學習紀錄備份 (JSON)</button>
+        </div>
+        <div id="settings-save-msg" style="margin-top:0.75rem; font-weight:600; color:var(--success);"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    多益 TOEIC 600分 AI 備考神器 ｜ 海軍藍 × 暖白專屬介面 ｜ 支援本機儲存 (LocalStorage)、Google Sheets 題庫同步與 Gemini API 自動出題
+  </footer>
+
+  <script>
+    const BUILTIN_QUESTIONS = [
+  {
+    "id": "Q001",
+    "part": "Part 5 句子填空",
+    "category": "詞性變化",
+    "difficulty": "600分核心",
+    "question": "Ms. Lin reviewed the sales contract _______ before signing it at yesterday's meeting.",
+    "options": {
+      "A": "careful",
+      "B": "carefully",
+      "C": "care",
+      "D": "caring"
+    },
+    "answer": "B",
+    "explanation": "修飾一般動詞 reviewed（檢視）需使用副詞 carefully（仔細地）。【核心單字】contract (n.) 合約、review (v.) 檢視。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q002",
+    "part": "Part 5 句子填空",
+    "category": "連接詞與介系詞",
+    "difficulty": "600分核心",
+    "question": "_______ the heavy rain, the annual charity marathon started on schedule this morning.",
+    "options": {
+      "A": "Although",
+      "B": "Because",
+      "C": "Despite",
+      "D": "Even though"
+    },
+    "answer": "C",
+    "explanation": "空格後為名詞片語 the heavy rain，需使用介系詞 Despite（儘管）。Although 與 Even though 為連接詞，後方須接完整子句。【核心單字】on schedule 準時、annual (adj.) 每年的。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q003",
+    "part": "Part 5 句子填空",
+    "category": "商務單字",
+    "difficulty": "600分核心",
+    "question": "All employees must submit their travel expense _______ to the accounting department by Friday.",
+    "options": {
+      "A": "receipts",
+      "B": "recipes",
+      "C": "receptions",
+      "D": "prescriptions"
+    },
+    "answer": "A",
+    "explanation": "報銷差旅費需提交「收據（receipts）」。recipe 為食譜，reception 為接待處，prescription 為處方箋。【核心單字】submit (v.) 提交、expense (n.) 費用。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q004",
+    "part": "Part 5 句子填空",
+    "category": "動詞時態",
+    "difficulty": "600分核心",
+    "question": "By the time the new director arrives next Monday, the HR team _______ the orientation materials.",
+    "options": {
+      "A": "prepares",
+      "B": "prepared",
+      "C": "will have prepared",
+      "D": "is preparing"
+    },
+    "answer": "C",
+    "explanation": "「By the time + 現在簡單式（表未來）」搭配未來完成式 will have + Vpp，表示在下週一新主管抵達前「已經準備完成」。【核心單字】orientation (n.) 新進人員訓練。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q005",
+    "part": "Part 5 句子填空",
+    "category": "代名詞",
+    "difficulty": "600分核心",
+    "question": "Customers who wish to return defective items should bring _______ to the customer service desk.",
+    "options": {
+      "A": "they",
+      "B": "them",
+      "C": "their",
+      "D": "theirs"
+    },
+    "answer": "B",
+    "explanation": "動詞 bring 後方需接受格代名詞 them，代替前面的複數名詞 defective items（瑕疵品）。【核心單字】defective (adj.) 有瑕疵的。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q006",
+    "part": "Part 5 句子填空",
+    "category": "介系詞搭配",
+    "difficulty": "600分核心",
+    "question": "Apex Tech is committed _______ providing reliable cloud storage solutions for small businesses.",
+    "options": {
+      "A": "to",
+      "B": "for",
+      "C": "with",
+      "D": "at"
+    },
+    "answer": "A",
+    "explanation": "片語 be committed to + V-ing / N 表示「致力於…」，其中 to 為介系詞，後方接動名詞 providing。【核心單字】reliable (adj.) 可靠的。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q007",
+    "part": "Part 5 句子填空",
+    "category": "詞性變化",
+    "difficulty": "600分核心",
+    "question": "The marketing manager requested a _______ analysis of the third-quarter survey results.",
+    "options": {
+      "A": "detail",
+      "B": "details",
+      "C": "detailed",
+      "D": "detailing"
+    },
+    "answer": "C",
+    "explanation": "冠詞 a 與名詞 analysis 之間需填入形容詞 detailed（詳細的）來修飾名詞。【核心單字】analysis (n.) 分析、survey (n.) 調查。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q008",
+    "part": "Part 5 句子填空",
+    "category": "商務單字",
+    "difficulty": "600分核心",
+    "question": "Due to rising material costs, the supplier decided to _______ its wholesale prices by 5 percent.",
+    "options": {
+      "A": "raise",
+      "B": "rise",
+      "C": "arise",
+      "D": "arouse"
+    },
+    "answer": "A",
+    "explanation": "空格後有受詞 its wholesale prices，需使用及物動詞 raise（調升、提高）。rise 為不及物動詞，後方不可直接接受詞。【核心單字】wholesale (adj./n.) 批發。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q009",
+    "part": "Part 5 句子填空",
+    "category": "連接詞",
+    "difficulty": "600分核心",
+    "question": "Please keep your boarding pass with you _______ you have exited the terminal building.",
+    "options": {
+      "A": "until",
+      "B": "during",
+      "C": "while",
+      "D": "since"
+    },
+    "answer": "A",
+    "explanation": "句意為「請隨身保管登機證，直到（until）您離開航廈大樓為止」。during 為介系詞不可接子句。【核心單字】boarding pass 登機證、terminal (n.) 航廈。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q010",
+    "part": "Part 5 句子填空",
+    "category": "關係代名詞",
+    "difficulty": "600分核心",
+    "question": "The software engineer _______ developed our mobile payment app will lead the workshop tomorrow.",
+    "options": {
+      "A": "which",
+      "B": "whom",
+      "C": "whose",
+      "D": "who"
+    },
+    "answer": "D",
+    "explanation": "先行詞為人（The software engineer），且關係子句缺少主詞（後接動詞 developed），故選主格關係代名詞 who。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q011",
+    "part": "Part 5 句子填空",
+    "category": "詞性變化",
+    "difficulty": "600分核心",
+    "question": "Attendance at the safety training session is _______ for all warehouse staff.",
+    "options": {
+      "A": "mandate",
+      "B": "mandatory",
+      "C": "mandating",
+      "D": "mandatorily"
+    },
+    "answer": "B",
+    "explanation": "be 動詞 is 後方需接形容詞 mandatory（強制性的、必修的）作為主詞補語。【核心單字】attendance (n.) 出席、warehouse (n.) 倉庫。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q012",
+    "part": "Part 5 句子填空",
+    "category": "商務單字",
+    "difficulty": "600分核心",
+    "question": "The hotel offers a complimentary shuttle service for _______ staying more than two nights.",
+    "options": {
+      "A": "guests",
+      "B": "hosts",
+      "C": "tenants",
+      "D": "commuters"
+    },
+    "answer": "A",
+    "explanation": "飯店提供免費接駁服務給住宿超過兩晚的「房客（guests）」。tenant 為租屋房客，commuter 為通勤族。【核心單字】complimentary (adj.) 免費贈送的、shuttle (n.) 接駁車。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q013",
+    "part": "Part 5 句子填空",
+    "category": "比較級與最高級",
+    "difficulty": "600分核心",
+    "question": "Of the three candidates interviewed today, Mr. Chen has the _______ experience in international logistics.",
+    "options": {
+      "A": "many",
+      "B": "much",
+      "C": "more",
+      "D": "most"
+    },
+    "answer": "D",
+    "explanation": "句首 Of the three candidates（在三位候選人之中）表示三者以上比較，且空格前有定冠詞 the，需用最高級 most。【核心單字】candidate (n.) 候選人、logistics (n.) 物流。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q014",
+    "part": "Part 5 句子填空",
+    "category": "被動語態",
+    "difficulty": "600分核心",
+    "question": "The renovated conference room _______ with a high-definition projector and wireless microphones.",
+    "options": {
+      "A": "equips",
+      "B": "is equipped",
+      "C": "equipping",
+      "D": "has equipped"
+    },
+    "answer": "B",
+    "explanation": "會議室「被配備」高畫質投影機，固定用法為 be equipped with（配備有…）。【核心單字】renovate (v.) 翻修、projector (n.) 投影機。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q015",
+    "part": "Part 5 句子填空",
+    "category": "商務片語",
+    "difficulty": "600分核心",
+    "question": "Should you have any questions regarding your invoice, please do not _______ to contact us.",
+    "options": {
+      "A": "hesitate",
+      "B": "postpone",
+      "C": "avoid",
+      "D": "refuse"
+    },
+    "answer": "A",
+    "explanation": "商務書信結尾高頻句型：please do not hesitate to contact us（請隨時與我們聯繫 / 勿猶豫與我們聯絡）。【核心單字】invoice (n.) 發票、請款單。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q016",
+    "part": "Part 6 段落填空",
+    "category": "上下文轉折詞",
+    "difficulty": "600分核心",
+    "question": "[Internal Memo] Our downtown branch achieved record sales in October. _______, customer satisfaction scores also increased by 12 percent compared to last quarter.",
+    "options": {
+      "A": "However",
+      "B": "Furthermore",
+      "C": "Otherwise",
+      "D": "Instead"
+    },
+    "answer": "B",
+    "explanation": "前句提到業績創紀錄，後句加上客戶滿意度也提升 12%，前後為「遞進補充」關係，故選 Furthermore（此外、而且）。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q017",
+    "part": "Part 6 段落填空",
+    "category": "動名詞與不定詞",
+    "difficulty": "600分核心",
+    "question": "[Customer Notice] To avoid _______ a late fee, please ensure that your monthly utility bill is paid before the 15th of each month.",
+    "options": {
+      "A": "pay",
+      "B": "paid",
+      "C": "to pay",
+      "D": "paying"
+    },
+    "answer": "D",
+    "explanation": "動詞 avoid（避免）後方固定接動名詞 V-ing，故選 paying（avoid paying a late fee 避免支付滯納金）。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q018",
+    "part": "Part 6 段落填空",
+    "category": "商務語意",
+    "difficulty": "600分核心",
+    "question": "[Email] We apologize for the delay in shipping your order #4821. The item was temporarily out of _______ at our main distribution center.",
+    "options": {
+      "A": "stock",
+      "B": "order",
+      "C": "print",
+      "D": "reach"
+    },
+    "answer": "A",
+    "explanation": "out of stock 為多益必考片語，意為「缺貨、無庫存」。out of order 為故障。【核心單字】distribution center 物流配送中心。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q019",
+    "part": "Part 6 段落填空",
+    "category": "時態判斷",
+    "difficulty": "600分核心",
+    "question": "[Announcement] Starting next month, all full-time employees _______ eligible to apply for the flexible remote-work program.",
+    "options": {
+      "A": "were",
+      "B": "have been",
+      "C": "will be",
+      "D": "had been"
+    },
+    "answer": "C",
+    "explanation": "句首 Starting next month（從下個月開始）為未來時間標記，故動詞選用未來式 will be。【核心單字】eligible (adj.) 符合資格的。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q020",
+    "part": "Part 6 段落填空",
+    "category": "詞性與搭配",
+    "difficulty": "600分核心",
+    "question": "[Job Posting] Successful applicants must demonstrate strong communication skills and the ability to work _______ under tight deadlines.",
+    "options": {
+      "A": "independent",
+      "B": "independently",
+      "C": "independence",
+      "D": "depend"
+    },
+    "answer": "B",
+    "explanation": "修飾動詞 work 需使用副詞 independently（獨立地）。work independently under tight deadlines 意為「在緊迫期限下獨立作業」。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q021",
+    "part": "Part 7 閱讀理解",
+    "category": "電子郵件主旨題",
+    "difficulty": "600分核心",
+    "question": "[Email] From: support@greenleaf.com / To: j.wang@mail.com / Subject: Membership Renewal.\n\"Dear Mr. Wang, Your annual GreenLeaf Fitness membership expires on November 30. Renew before November 15 to receive a 15% early-bird discount.\"\nWhat is the purpose of the email?",
+    "options": {
+      "A": "To confirm a class reservation",
+      "B": "To encourage a customer to renew a membership",
+      "C": "To announce a new gym location",
+      "D": "To process a refund request"
+    },
+    "answer": "B",
+    "explanation": "信件主旨為 Membership Renewal（會籍續約），內文提醒會籍將於 11/30 到期，11/15 前續約可享 85 折優惠，故目的為鼓勵顧客續約。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q022",
+    "part": "Part 7 閱讀理解",
+    "category": "細節推論題",
+    "difficulty": "600分核心",
+    "question": "[Notice] \"Library Hours Update: Due to roof repairs from Oct 20 to Oct 25, the 3rd-floor reading area will be closed. Patrons may use the 1st-floor study lounge instead.\"\nWhere can visitors study on October 22?",
+    "options": {
+      "A": "On the 3rd floor",
+      "B": "On the 1st floor",
+      "C": "On the rooftop",
+      "D": "At the city hall"
+    },
+    "answer": "B",
+    "explanation": "公告指出 10/20 至 10/25 期間三樓閱覽區因屋頂維修關閉，讀者可改用一樓自習室（1st-floor study lounge），10/22 落在此期間內。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q023",
+    "part": "Part 7 閱讀理解",
+    "category": "廣告條件題",
+    "difficulty": "600分核心",
+    "question": "[Ad] \"Metro Office Supplies: Spend $100 or more on printer paper and toner cartridges this week and get free next-day delivery! Use promo code FAST100 at checkout.\"\nHow can customers qualify for free shipping?",
+    "options": {
+      "A": "By visiting the retail store in person",
+      "B": "By signing up for a VIP credit card",
+      "C": "By purchasing at least $100 of eligible items and entering a code",
+      "D": "By ordering before 9:00 A.M."
+    },
+    "answer": "C",
+    "explanation": "廣告說明本週購買印表機紙張與碳粉匣滿 $100 並在結帳輸入優惠碼 FAST100，即可享有免費隔日宅配。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q024",
+    "part": "Part 7 閱讀理解",
+    "category": "備忘錄細節題",
+    "difficulty": "600分核心",
+    "question": "[Memo] \"To: All Staff / From: IT Department. We will upgrade the company email server this Saturday from 10:00 P.M. to 2:00 A.M. During this 4-hour window, email access will be unavailable. Please save your drafts beforehand.\"\nWhy did the IT Department send this memo?",
+    "options": {
+      "A": "To introduce a new IT director",
+      "B": "To warn staff about a scheduled service interruption",
+      "C": "To request feedback on a new laptop model",
+      "D": "To cancel Saturday's overtime shift"
+    },
+    "answer": "B",
+    "explanation": "備忘錄通知員工週六晚間 10 點至凌晨 2 點將進行郵件伺服器升級，期間無法使用信箱，屬於「預告系統服務暫停（service interruption）」。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q025",
+    "part": "Part 7 閱讀理解",
+    "category": "行事曆與時間題",
+    "difficulty": "600分核心",
+    "question": "[Schedule] \"09:00 Opening Remarks (Room A) / 10:00 Keynote by Dr. Patel (Main Hall) / 11:30 Marketing Workshop (Room B) / 12:30 Networking Lunch (Cafeteria).\" Note: The Marketing Workshop has been moved to Room C due to high registration.\nWhere will the 11:30 session take place?",
+    "options": {
+      "A": "Room A",
+      "B": "Main Hall",
+      "C": "Room B",
+      "D": "Room C"
+    },
+    "answer": "D",
+    "explanation": "時程表原訂 11:30 行銷工作坊在 Room B，但下方備註說明因報名踴躍已改至 Room C（moved to Room C）。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q026",
+    "part": "Part 2 聽力應答",
+    "category": "When 時間問句",
+    "difficulty": "600分核心",
+    "question": "[Listening Question] \"When is the quarterly budget report due?\" Choose the best response:",
+    "options": {
+      "A": "In the top drawer.",
+      "B": "Next Wednesday afternoon.",
+      "C": "Yes, it was very informative.",
+      "D": "About five hundred dollars."
+    },
+    "answer": "B",
+    "explanation": "When 開頭詢問截止時間（When is ... due?），正確回應應為具體時間點 Next Wednesday afternoon（下週三下午）。A 為地點，C 為 Yes/No 誤答，D 為金額。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q027",
+    "part": "Part 2 聽力應答",
+    "category": "Who 人物與職責問句",
+    "difficulty": "600分核心",
+    "question": "[Listening Question] \"Who is in charge of organizing the client welcome dinner?\" Choose the best response:",
+    "options": {
+      "A": "At the Grand Hotel downtown.",
+      "B": "Ms. Gomez from Public Relations.",
+      "C": "I'd like the grilled salmon, please.",
+      "D": "Because the flight was delayed."
+    },
+    "answer": "B",
+    "explanation": "Who is in charge of...（誰負責…？）詢問負責人，應選擇人名或部門職稱 Ms. Gomez from Public Relations（公關部的 Gomez 女士）。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q028",
+    "part": "Part 2 聽力應答",
+    "category": "間接回答與請求",
+    "difficulty": "600分核心",
+    "question": "[Listening Question] \"Where can I find the replacement ink cartridges?\" Choose the best response:",
+    "options": {
+      "A": "Let me ask the office manager for the key to the supply cabinet.",
+      "B": "Every two months.",
+      "C": "It was printed in color.",
+      "D": "No, I haven't seen him today."
+    },
+    "answer": "A",
+    "explanation": "多益 600 分必考「間接回答」：詢問墨水匣在哪，回答「讓我去跟辦公室經理拿文具櫃鑰匙（supply cabinet）」，符合實際商務情境。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q029",
+    "part": "Part 3 聽力對話情境",
+    "category": "商務對話推論",
+    "difficulty": "600分核心",
+    "question": "[Dialogue Excerpt] Man: \"The client in Tokyo wants to move our video conference from Thursday to Wednesday.\"\nWoman: \"I'll be visiting the factory in Taichung all day Wednesday. Could we propose Friday morning instead?\"\nWhat does the woman suggest?",
+    "options": {
+      "A": "Canceling the factory tour",
+      "B": "Flying to Tokyo on Wednesday",
+      "C": "Rescheduling the meeting to Friday morning",
+      "D": "Sending an email summary instead of meeting"
+    },
+    "answer": "C",
+    "explanation": "女士表示週三整天都在台中巡視工廠，提議「Could we propose Friday morning instead?（我們能改提議週五早上嗎？）」，即改期至週五上午。",
+    "createdAt": "2026-10-17"
+  },
+  {
+    "id": "Q030",
+    "part": "Part 4 聽力獨白情境",
+    "category": "廣播與語音留言",
+    "difficulty": "600分核心",
+    "question": "[Voicemail Excerpt] \"Hello, this is David from Horizon Dental Clinic calling to confirm your appointment with Dr. Lin tomorrow at 3:00 P.M. If you need to reschedule, please call us at least 24 hours in advance.\"\nWhat is the listener asked to do if unable to attend?",
+    "options": {
+      "A": "Pay a cancellation fee online",
+      "B": "Call the clinic ahead of time",
+      "C": "Arrive 15 minutes early",
+      "D": "Email Dr. Lin directly"
+    },
+    "answer": "B",
+    "explanation": "語音留言最後提到「If you need to reschedule, please call us at least 24 hours in advance（若需改期，請至少提前 24 小時來電）」，對應選項 B。",
+    "createdAt": "2026-10-17"
+  }
+];
+    const DEFAULT_SHEET_CSV = "https://docs.google.com/spreadsheets/d/1LNDkKO3YKBrl4nuEW2XEO7tuY8Tv4G-T9zG4t6H7Obo/gviz/tq?tqx=out:csv";
+    const STORAGE_KEY = "toeic_600_ai_study_app_v1";
+
+    let state = {
+      settings: {
+        examDate: "2026-11-29",
+        currentScore: 450,
+        targetScore: 600,
+        dailyMinutes: 60,
+        studyDays: [1, 2, 3, 4, 5, 6],
+        focusUnits: [
+          "Part 5 句子填空（詞性與文法）",
+          "Part 5 句子填空（商務高頻單字）",
+          "Part 6 段落填空（上下文與時態）",
+          "Part 7 單篇閱讀（信件與公告）",
+          "Part 2 聽力應答（問句與間接回答）",
+          "Part 3 & 4 聽力對話與獨白"
+        ],
+        csvUrl: DEFAULT_SHEET_CSV,
+        geminiApiKey: "",
+        geminiModel: "gemini-2.5-flash"
+      },
+      plan: [],
+      questions: [...BUILTIN_QUESTIONS],
+      wrongQuestions: {}, // id -> { count, lastWrongOption, timestamp }
+      examHistory: []     // { date, score, correct, total, mode }
+    };
+
+    let currentExam = {
+      questions: [],
+      userAnswers: {},
+      submitted: false,
+      timerSeconds: 0,
+      timerInterval: null,
+      isWrongMode: false
+    };
+
+    function formatDate(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function getWeekdayName(dayIndex) {
+      return ["週日", "週一", "週二", "週三", "週四", "週五", "週六"][dayIndex];
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          state.settings = { ...state.settings, ...(parsed.settings || {}) };
+          state.plan = Array.isArray(parsed.plan) ? parsed.plan : [];
+          if (Array.isArray(parsed.questions) && parsed.questions.length > 0) {
+            state.questions = parsed.questions;
+          }
+          state.wrongQuestions = parsed.wrongQuestions || {};
+          state.examHistory = Array.isArray(parsed.examHistory) ? parsed.examHistory : [];
+        }
+      } catch (e) {
+        console.warn("讀取本機資料失敗，使用預設值", e);
+      }
+      if (!state.plan || state.plan.length === 0) {
+        generateStudyPlan(false);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn("儲存本機資料失敗", e);
+      }
+      updateHeaderAndBadges();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      const panel = document.getElementById("tab-" + tabId);
+      if (panel) panel.classList.add("active");
+
+      const tabOrder = ["today", "plan", "mock", "wrong", "bank", "settings"];
+      const idx = tabOrder.indexOf(tabId);
+      const btns = document.querySelectorAll(".tab-btn");
+      if (idx >= 0 && btns[idx]) btns[idx].classList.add("active");
+
+      if (tabId === "today") renderToday();
+      if (tabId === "plan") renderPlan();
+      if (tabId === "wrong") renderWrongList();
+      if (tabId === "bank") renderQuestionBank();
+      if (tabId === "settings") populateSettingsForm();
+    }
+
+    function updateHeaderAndBadges() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const exam = new Date(state.settings.examDate + "T00:00:00");
+      const diffDays = Math.max(0, Math.ceil((exam - today) / (1000 * 60 * 60 * 24)));
+
+      document.getElementById("hdr-days-left").textContent = diffDays;
+      document.getElementById("hdr-target-score").textContent = state.settings.targetScore;
+      document.getElementById("hdr-q-count").textContent = state.questions.length;
+      document.getElementById("nav-bank-count").textContent = state.questions.length;
+      document.getElementById("nav-wrong-count").textContent = Object.keys(state.wrongQuestions).length;
+    }
+
+    function populateSettingsForm() {
+      document.getElementById("set-exam-date").value = state.settings.examDate;
+      document.getElementById("set-daily-mins").value = state.settings.dailyMinutes;
+      document.getElementById("set-current-score").value = state.settings.currentScore;
+      document.getElementById("set-target-score").value = state.settings.targetScore;
+      document.getElementById("set-csv-url").value = state.settings.csvUrl || DEFAULT_SHEET_CSV;
+      document.getElementById("set-gemini-key").value = state.settings.geminiApiKey || "";
+      document.getElementById("set-gemini-model").value = state.settings.geminiModel || "gemini-2.5-flash";
+
+      document.querySelectorAll("#weekday-pills .pill-checkbox").forEach(cb => {
+        cb.checked = state.settings.studyDays.includes(Number(cb.value));
+      });
+      document.querySelectorAll("#unit-pills .pill-checkbox").forEach(cb => {
+        cb.checked = state.settings.focusUnits.includes(cb.value);
+      });
+    }
+
+    function saveSettings() {
+      const examDate = document.getElementById("set-exam-date").value || "2026-11-29";
+      const dailyMins = Number(document.getElementById("set-daily-mins").value) || 60;
+      const currentScore = Number(document.getElementById("set-current-score").value) || 450;
+      const targetScore = Number(document.getElementById("set-target-score").value) || 600;
+      const csvUrl = document.getElementById("set-csv-url").value.trim() || DEFAULT_SHEET_CSV;
+      const geminiKey = document.getElementById("set-gemini-key").value.trim();
+      const geminiModel = document.getElementById("set-gemini-model").value;
+
+      const studyDays = [];
+      document.querySelectorAll("#weekday-pills .pill-checkbox:checked").forEach(cb => {
+        studyDays.push(Number(cb.value));
+      });
+
+      const focusUnits = [];
+      document.querySelectorAll("#unit-pills .pill-checkbox:checked").forEach(cb => {
+        focusUnits.push(cb.value);
+      });
+
+      state.settings = {
+        examDate,
+        dailyMinutes: dailyMins,
+        currentScore,
+        targetScore,
+        studyDays: studyDays.length ? studyDays : [1, 2, 3, 4, 5],
+        focusUnits: focusUnits.length ? focusUnits : ["Part 5 句子填空（詞性與文法）"],
+        csvUrl,
+        geminiApiKey: geminiKey,
+        geminiModel
+      };
+
+      generateStudyPlan(false);
+      saveState();
+
+      const msg = document.getElementById("settings-save-msg");
+      msg.textContent = "✅ 設定已儲存！讀書計畫與倒數天數已同步更新。";
+      setTimeout(() => { msg.textContent = ""; }, 4000);
+    }
+
+    function generateStudyPlan(confirmOverwrite) {
+      if (confirmOverwrite && state.plan.some(p => p.completed)) {
+        if (!confirm("重新生成計畫將會重置目前的打勾紀錄，確定要重新生成嗎？")) return;
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const exam = new Date(state.settings.examDate + "T00:00:00");
+      const maxDays = Math.min(90, Math.max(7, Math.ceil((exam - today) / (1000 * 60 * 60 * 24))));
+
+      const units = state.settings.focusUnits.length
+        ? state.settings.focusUnits
+        : ["Part 5 句子填空", "Part 6 段落填空", "Part 7 閱讀理解"];
+
+      const newPlan = [];
+      let studyDayCounter = 0;
+
+      for (let i = 0; i <= maxDays; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        const dateStr = formatDate(d);
+        const dayOfWeek = d.getDay();
+
+        if (!state.settings.studyDays.includes(dayOfWeek)) continue;
+
+        studyDayCounter++;
+        const isMockDay = (studyDayCounter % 5 === 0);
+        const unitName = units[(studyDayCounter - 1) % units.length];
+
+        if (isMockDay) {
+          newPlan.push({
+            id: "plan-" + dateStr,
+            date: dateStr,
+            weekday: getWeekdayName(dayOfWeek),
+            title: `【定期模擬考檢視】完成 15 題綜合模擬考 + 錯題本訂正（${state.settings.dailyMinutes} 分鐘）`,
+            type: "mock",
+            completed: false
+          });
+        } else {
+          newPlan.push({
+            id: "plan-" + dateStr,
+            date: dateStr,
+            weekday: getWeekdayName(dayOfWeek),
+            title: `【核心訓練】${unitName} 刷題 10 題 + 必考單字複習（${state.settings.dailyMinutes} 分鐘）`,
+            type: "study",
+            completed: false
+          });
+        }
+      }
+
+      state.plan = newPlan;
+      saveState();
+      renderPlan();
+      renderToday();
+    }
+
+    function togglePlanItem(planId) {
+      const item = state.plan.find(p => p.id === planId);
+      if (item) {
+        item.completed = !item.completed;
+        saveState();
+        renderPlan();
+        renderToday();
+      }
+    }
+
+    function renderPlan() {
+      const container = document.getElementById("plan-list-container");
+      const todayStr = formatDate(new Date());
+      const total = state.plan.length;
+      const done = state.plan.filter(p => p.completed).length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      document.getElementById("plan-summary-text").textContent =
+        `已完成 ${done} / ${total} 項學習日任務（達成率 ${pct}%）`;
+
+      if (total === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted);">尚未產生讀書計畫，請至「設定」確認考試日期後點擊重新生成。</p>`;
+        return;
+      }
+
+      container.innerHTML = state.plan.map(item => {
+        const isToday = item.date === todayStr;
+        return `
+          <div class="plan-item ${item.completed ? 'completed' : ''} ${isToday ? 'is-today' : ''}">
+            <div class="plan-left">
+              <input type="checkbox" class="plan-checkbox" ${item.completed ? 'checked' : ''} onchange="togglePlanItem('${item.id}')" />
+              <div class="plan-date">${item.date} (${item.weekday}) ${isToday ? '<span class="tag gold">今日</span>' : ''}</div>
+              <div class="plan-title">${item.title}</div>
+            </div>
+            <div>
+              <span class="tag ${item.type === 'mock' ? 'mock' : ''}">${item.type === 'mock' ? '模擬考日' : '日常精讀'}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderToday() {
+      const todayStr = formatDate(new Date());
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const exam = new Date(state.settings.examDate + "T00:00:00");
+      const diffDays = Math.max(0, Math.ceil((exam - today) / (1000 * 60 * 60 * 24)));
+
+      document.getElementById("td-days-left").textContent = `${diffDays} 天`;
+      document.getElementById("td-exam-date-label").textContent = `目標考試日：${state.settings.examDate}`;
+      document.getElementById("td-score-gap").textContent = `${state.settings.currentScore} → ${state.settings.targetScore} 分`;
+      document.getElementById("td-daily-mins").textContent = `每日預計投入 ${state.settings.dailyMinutes} 分鐘`;
+      document.getElementById("td-today-date").textContent = `${todayStr} ${getWeekdayName(new Date().getDay())}`;
+
+      const behindItems = state.plan.filter(p => p.date < todayStr && !p.completed);
+      document.getElementById("td-behind-count").textContent = `${behindItems.length} 項`;
+      document.getElementById("td-behind-hint").textContent =
+        behindItems.length === 0 ? "進度完全達標，太棒了！" : "建議優先補齊前幾日未勾選的任務";
+
+      if (state.examHistory.length > 0) {
+        const last = state.examHistory[state.examHistory.length - 1];
+        document.getElementById("td-last-score").textContent = `${last.score}% (${last.correct}/${last.total})`;
+        document.getElementById("td-total-exams").textContent = `累計完成 ${state.examHistory.length} 次模擬考`;
+      } else {
+        document.getElementById("td-last-score").textContent = "尚未測驗";
+        document.getElementById("td-total-exams").textContent = "點擊「模擬考」立即開始第一次測驗";
+      }
+
+      const todayTasks = state.plan.filter(p => p.date === todayStr);
+      const taskListEl = document.getElementById("td-task-list");
+      const displayTasks = [...behindItems.slice(0, 3), ...todayTasks];
+
+      if (displayTasks.length === 0) {
+        taskListEl.innerHTML = `<p style="color:var(--text-muted);">今天是您設定的休息日，或所有近期任務皆已完成！您仍可隨時點擊上方「立即測驗 5 題」自主練習。</p>`;
+      } else {
+        taskListEl.innerHTML = displayTasks.map(item => `
+          <div class="plan-item ${item.completed ? 'completed' : ''} ${item.date === todayStr ? 'is-today' : ''}">
+            <div class="plan-left">
+              <input type="checkbox" class="plan-checkbox" ${item.completed ? 'checked' : ''} onchange="togglePlanItem('${item.id}')" />
+              <div class="plan-date">${item.date} (${item.weekday}) ${item.date < todayStr ? '<span class="tag mock">待補進度</span>' : '<span class="tag gold">今日任務</span>'}</div>
+              <div class="plan-title">${item.title}</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('mock')">去刷題</button>
+          </div>
+        `).join("");
+      }
+
+      const histEl = document.getElementById("td-history-list");
+      if (state.examHistory.length === 0) {
+        histEl.innerHTML = `<p style="color:var(--text-muted);">尚無模擬考紀錄。完成第一次模擬考後，這裡會顯示您的分數趨勢與答對率。</p>`;
+      } else {
+        histEl.innerHTML = `
+          <table>
+            <thead>
+              <tr><th>測驗時間</th><th>模式 / 範圍</th><th>答對題數</th><th>正確率</th></tr>
+            </thead>
+            <tbody>
+              ${state.examHistory.slice().reverse().slice(0, 8).map(h => `
+                <tr>
+                  <td>${h.date}</td>
+                  <td>${h.mode}</td>
+                  <td>${h.correct} / ${h.total} 題</td>
+                  <td><strong style="color:${h.score >= 70 ? 'var(--success)' : 'var(--navy-800)'}">${h.score}%</strong></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+      }
+    }
+
+    // Mock Exam Logic
+    function startMockExam(fromWrongBook) {
+      let pool = [...state.questions];
+      let modeLabel = "綜合模擬考";
+
+      if (fromWrongBook) {
+        const wrongIds = Object.keys(state.wrongQuestions);
+        pool = state.questions.filter(q => wrongIds.includes(q.id));
+        if (pool.length === 0) {
+          alert("目前錯題本是空的！請先進行一般模擬考。");
+          switchTab("mock");
+          return;
+        }
+        modeLabel = "錯題本重測";
+        switchTab("mock");
+      } else {
+        const partFilter = document.getElementById("mock-part").value;
+        if (partFilter !== "ALL") {
+          pool = pool.filter(q => q.part === partFilter);
+          modeLabel = partFilter;
+        }
+      }
+
+      const desiredCount = fromWrongBook
+        ? pool.length
+        : Math.min(Number(document.getElementById("mock-count").value) || 5, pool.length);
+
+      const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, desiredCount);
+
+      currentExam = {
+        questions: shuffled,
+        userAnswers: {},
+        submitted: false,
+        timerSeconds: 0,
+        timerInterval: null,
+        isWrongMode: fromWrongBook,
+        modeLabel
+      };
+
+      document.getElementById("mock-setup-card").style.display = "none";
+      document.getElementById("mock-active-card").style.display = "block";
+      document.getElementById("mock-result-banner").style.display = "none";
+      document.getElementById("mock-submit-btn").style.display = "inline-flex";
+      document.getElementById("mock-retry-btn").style.display = "none";
+      document.getElementById("mock-exam-title").textContent = `${modeLabel}（共 ${shuffled.length} 題）`;
+
+      renderMockQuestions();
+
+      clearInterval(currentExam.timerInterval);
+      currentExam.timerInterval = setInterval(() => {
+        currentExam.timerSeconds++;
+        const mins = String(Math.floor(currentExam.timerSeconds / 60)).padStart(2, "0");
+        const secs = String(currentExam.timerSeconds % 60).padStart(2, "0");
+        document.getElementById("mock-timer").textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function selectAnswer(qId, optKey) {
+      if (currentExam.submitted) return;
+      currentExam.userAnswers[qId] = optKey;
+    }
+
+    function renderMockQuestions() {
+      const container = document.getElementById("mock-questions-container");
+      container.innerHTML = currentExam.questions.map((q, idx) => {
+        const userAns = currentExam.userAnswers[q.id];
+        const isSubmitted = currentExam.submitted;
+
+        const optionsHtml = ["A", "B", "C", "D"].map(optKey => {
+          let cls = "option-label";
+          if (isSubmitted) {
+            if (optKey === q.answer) cls += " correct";
+            else if (userAns === optKey && userAns !== q.answer) cls += " wrong";
+          }
+          const checked = userAns === optKey ? "checked" : "";
+          const disabled = isSubmitted ? "disabled" : "";
+          return `
+            <label class="${cls}">
+              <input type="radio" name="q_${q.id}" value="${optKey}" ${checked} ${disabled} onchange="selectAnswer('${q.id}', '${optKey}')" />
+              <span><strong>(${optKey})</strong> ${q.options[optKey] || ""}</span>
+            </label>
+          `;
+        }).join("");
+
+        const expHtml = isSubmitted ? `
+          <div class="explanation-box">
+            <div><strong>${userAns === q.answer ? '✅ 答對了！' : `❌ 答錯了（您的作答：${userAns || '未作答'} ／ 正確答案：${q.answer}）`}</strong></div>
+            <div style="margin-top:0.35rem;">💡 <strong>詳解：</strong>${q.explanation}</div>
+          </div>
+        ` : "";
+
+        return `
+          <div class="question-box">
+            <div class="question-meta">
+              <span><strong>第 ${idx + 1} 題</strong> ｜ ${q.id}</span>
+              <div>
+                <span class="tag">${q.part}</span>
+                <span class="tag gold">${q.category || q.difficulty}</span>
+              </div>
+            </div>
+            <div class="question-text">${q.question}</div>
+            <div class="options-list">${optionsHtml}</div>
+            ${expHtml}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function submitMockExam() {
+      if (currentExam.submitted) return;
+      clearInterval(currentExam.timerInterval);
+      currentExam.submitted = true;
+
+      let correctCount = 0;
+      currentExam.questions.forEach(q => {
+        const ans = currentExam.userAnswers[q.id];
+        if (ans === q.answer) {
+          correctCount++;
+        } else {
+          const prev = state.wrongQuestions[q.id] || { count: 0 };
+          state.wrongQuestions[q.id] = {
+            count: prev.count + 1,
+            lastWrongOption: ans || "未作答",
+            updatedAt: formatDate(new Date())
+          };
+        }
+      });
+
+      const total = currentExam.questions.length;
+      const scorePct = Math.round((correctCount / total) * 100);
+
+      state.examHistory.push({
+        date: `${formatDate(new Date())} ${new Date().toTimeString().slice(0, 5)}`,
+        mode: currentExam.modeLabel,
+        correct: correctCount,
+        total,
+        score: scorePct
+      });
+
+      saveState();
+      renderMockQuestions();
+
+      const banner = document.getElementById("mock-result-banner");
+      banner.style.display = "flex";
+      banner.className = "notice";
+      banner.innerHTML = `
+        <div>
+          <strong style="font-size:1.1rem;">🎉 測驗完成！您在 ${total} 題中答對了 ${correctCount} 題（正確率 ${scorePct}%）</strong>
+          <div style="font-size:0.86rem; margin-top:0.2rem;">答錯的題目已自動加入「錯題本」，請往下捲動檢視每題中文詳解與核心單字。</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="switchTab('wrong')">前往錯題本</button>
+      `;
+
+      document.getElementById("mock-submit-btn").style.display = "none";
+      document.getElementById("mock-retry-btn").style.display = "inline-flex";
+    }
+
+    function cancelMockExam() {
+      clearInterval(currentExam.timerInterval);
+      resetMockView();
+    }
+
+    function resetMockView() {
+      clearInterval(currentExam.timerInterval);
+      document.getElementById("mock-setup-card").style.display = "block";
+      document.getElementById("mock-active-card").style.display = "none";
+    }
+
+    // Wrong Answer Book
+    function renderWrongList() {
+      const container = document.getElementById("wrong-list-container");
+      const wrongIds = Object.keys(state.wrongQuestions);
+
+      if (wrongIds.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted); padding:1rem 0;">🎉 目前沒有錯題紀錄！去「模擬考」測驗幾題，答錯的題目會自動整理在這裡。</p>`;
+        return;
+      }
+
+      const items = state.questions.filter(q => wrongIds.includes(q.id));
+      container.innerHTML = items.map(q => {
+        const meta = state.wrongQuestions[q.id];
+        return `
+          <div class="question-box">
+            <div class="question-meta">
+              <div>
+                <span class="tag">${q.part}</span>
+                <span class="tag mock">累計答錯 ${meta.count} 次（上次選：${meta.lastWrongOption}）</span>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="removeWrongQuestion('${q.id}')">✔️ 已熟練移除</button>
+            </div>
+            <div class="question-text">${q.question}</div>
+            <div style="font-size:0.9rem; margin-bottom:0.6rem; color:var(--text-muted);">
+              (A) ${q.options.A} ｜ (B) ${q.options.B} ｜ (C) ${q.options.C} ｜ (D) ${q.options.D}
+            </div>
+            <div class="explanation-box">
+              <div><strong>正確答案：(${q.answer}) ${q.options[q.answer]}</strong></div>
+              <div style="margin-top:0.25rem;">💡 ${q.explanation}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function removeWrongQuestion(qId) {
+      delete state.wrongQuestions[qId];
+      saveState();
+      renderWrongList();
+    }
+
+    function clearAllWrong() {
+      if (!confirm("確定要清空所有錯題紀錄嗎？")) return;
+      state.wrongQuestions = {};
+      saveState();
+      renderWrongList();
+    }
+
+    // Question Bank & CSV / Gemini API
+    function renderQuestionBank() {
+      const search = (document.getElementById("bank-search").value || "").toLowerCase();
+      const partFilter = document.getElementById("bank-filter-part").value;
+
+      const filtered = state.questions.filter(q => {
+        const matchPart = partFilter === "ALL" || q.part === partFilter;
+        const text = `${q.id} ${q.part} ${q.category} ${q.question} ${q.explanation}`.toLowerCase();
+        return matchPart && text.includes(search);
+      });
+
+      document.getElementById("bank-total-count").textContent = filtered.length;
+      const tbody = document.getElementById("bank-table-body");
+      tbody.innerHTML = filtered.map(q => `
+        <tr>
+          <td><strong>${q.id}</strong></td>
+          <td>
+            <span class="tag">${q.part}</span>
+            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.25rem;">${q.category || q.difficulty}</div>
+          </td>
+          <td>
+            <div style="font-weight:600; margin-bottom:0.35rem; white-space:pre-line;">${q.question}</div>
+            <div style="font-size:0.83rem; color:var(--text-muted);">
+              (A) ${q.options.A} &nbsp; (B) ${q.options.B} &nbsp; (C) ${q.options.C} &nbsp; (D) ${q.options.D}
+            </div>
+          </td>
+          <td><span class="tag gold">(${q.answer})</span></td>
+          <td style="font-size:0.85rem;">${q.explanation}</td>
+        </tr>
+      `).join("");
+    }
+
+    function normalizeSheetCsvUrl(rawUrl) {
+      if (!rawUrl) return DEFAULT_SHEET_CSV;
+      if (rawUrl.includes("output=csv") || rawUrl.includes("tqx=out:csv")) return rawUrl;
+      const match = rawUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (match && match[1]) {
+        return `https://docs.google.com/spreadsheets/d/${match[1]}/gviz/tq?tqx=out:csv`;
+      }
+      return rawUrl;
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cur = "";
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const next = text[i + 1];
+        if (inQuotes) {
+          if (ch === '"' && next === '"') {
+            cur += '"';
+            i++;
+          } else if (ch === '"') {
+            inQuotes = false;
+          } else {
+            cur += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuotes = true;
+          } else if (ch === ",") {
+            row.push(cur.trim());
+            cur = "";
+          } else if (ch === "\n" || (ch === "\r" && next === "\n")) {
+            if (ch === "\r") i++;
+            row.push(cur.trim());
+            if (row.some(cell => cell !== "")) rows.push(row);
+            row = [];
+            cur = "";
+          } else {
+            cur += ch;
+          }
+        }
+      }
+      if (cur !== "" || row.length > 0) {
+        row.push(cur.trim());
+        if (row.some(cell => cell !== "")) rows.push(row);
+      }
+      return rows;
+    }
+
+    async function syncFromGoogleSheet() {
+      const statusEl = document.getElementById("ai-gen-status");
+      const rawUrl = document.getElementById("set-csv-url")?.value?.trim() || state.settings.csvUrl || DEFAULT_SHEET_CSV;
+      const csvUrl = normalizeSheetCsvUrl(rawUrl);
+
+      if (statusEl) statusEl.textContent = "⏳ 正在從 Google 試算表讀取最新題庫...";
+      try {
+        const res = await fetch(csvUrl);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const csvText = await res.text();
+        const rows = parseCSV(csvText);
+        if (rows.length < 2) throw new Error("CSV 內容無效或尚無資料列");
+
+        const imported = [];
+        for (let i = 1; i < rows.length; i++) {
+          const r = rows[i];
+          if (r.length < 10 || !r[4]) continue;
+          imported.push({
+            id: r[0] || `Q${String(i).padStart(3, "0")}`,
+            part: r[1] || "Part 5 句子填空",
+            category: r[2] || "綜合題型",
+            difficulty: r[3] || "600分核心",
+            question: r[4],
+            options: { A: r[5] || "", B: r[6] || "", C: r[7] || "", D: r[8] || "" },
+            answer: (r[9] || "A").toUpperCase().trim().slice(0, 1),
+            explanation: r[10] || "",
+            createdAt: r[11] || formatDate(new Date())
+          });
+        }
+
+        if (imported.length === 0) throw new Error("未能解析出有效題目列");
+
+        // Merge with existing questions by ID
+        const map = new Map();
+        state.questions.forEach(q => map.set(q.id, q));
+        imported.forEach(q => map.set(q.id, q));
+        state.questions = Array.from(map.values());
+
+        saveState();
+        renderQuestionBank();
+        if (statusEl) statusEl.textContent = `✅ 成功從 Google 試算表同步！目前題庫共 ${state.questions.length} 題。`;
+        alert(`同步成功！已載入 ${imported.length} 題，目前總題庫共 ${state.questions.length} 題。`);
+      } catch (err) {
+        console.warn("CSV 同步提醒：", err);
+        if (statusEl) {
+          statusEl.textContent = "ℹ️ 請先在 Google 試算表點選「檔案 → 共用 → 發布到網路 → CSV」以開啟公開讀取權限（目前已預載 30 題可直接使用）。";
+        }
+        alert("提示：若要從瀏覽器直接讀取雲端試算表，請先在 Google 試算表點選「檔案 → 共用 → 發布到網路 → 選擇 CSV 格式發布」。目前 App 已內建您的 30 題完整題庫，可直接開始練習！");
+      }
+    }
+
+    async function generateQuestionsWithGemini() {
+      const apiKey = state.settings.geminiApiKey || document.getElementById("set-gemini-key")?.value?.trim();
+      if (!apiKey) {
+        alert("請先至「⚙️ 設定」頁面填入您的 Gemini API Key，即可在網頁中一鍵用 AI 出題！");
+        switchTab("settings");
+        return;
+      }
+
+      const part = document.getElementById("ai-gen-part").value;
+      const diff = document.getElementById("ai-gen-diff").value;
+      const model = state.settings.geminiModel || "gemini-2.5-flash";
+      const statusEl = document.getElementById("ai-gen-status");
+      const btn = document.getElementById("btn-ai-generate");
+
+      btn.disabled = true;
+      statusEl.textContent = `⏳ Gemini (${model}) 正在為您出 5 題【${part}｜${diff}】新題目，約需 10–20 秒...`;
+
+      const prompt = `你是一位專業的多益 (TOEIC) 命題老師。請針對目標多益 600 分的台灣考生，設計 5 題全新的「${part}」單選題（難度：${diff}）。
+請嚴格只回傳 JSON 陣列（不要加上 markdown 語法或額外文字），每個元素格式如下：
+[
+  {
+    "part": "${part}",
+    "category": "考點分類（如：詞性變化、商務單字、細節推論等）",
+    "difficulty": "${diff}",
+    "question": "英文題目內容（若是填空題請用 _______ 表示空格）",
+    "options": {"A": "選項A", "B": "選項B", "C": "選項C", "D": "選項D"},
+    "answer": "正確選項字母(A/B/C/D)",
+    "explanation": "繁體中文詳解與核心必考單字整理"
+  }
+]`;
+
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              responseMimeType: "application/json"
+            }
+          })
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`API 回應錯誤 (${response.status}): ${errText}`);
+        }
+
+        const data = await response.json();
+        const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+        const cleaned = rawText.replace(/^```json/i, "").replace(/```$/i, "").trim();
+        const newItems = JSON.parse(cleaned);
+
+        if (!Array.isArray(newItems) || newItems.length === 0) {
+          throw new Error("回傳格式非有效題目陣列");
+        }
+
+        const startIdx = state.questions.length + 1;
+        newItems.forEach((item, idx) => {
+          const qId = `Q${String(startIdx + idx).padStart(3, "0")}`;
+          state.questions.push({
+            id: qId,
+            part: item.part || part,
+            category: item.category || "AI 生成題",
+            difficulty: item.difficulty || diff,
+            question: item.question,
+            options: item.options || { A: "", B: "", C: "", D: "" },
+            answer: (item.answer || "A").toUpperCase().trim().slice(0, 1),
+            explanation: item.explanation || "",
+            createdAt: formatDate(new Date())
+          });
+        });
+
+        saveState();
+        renderQuestionBank();
+        statusEl.textContent = `🎉 成功生成 ${newItems.length} 題新題目並加入題庫！（目前共 ${state.questions.length} 題）`;
+      } catch (e) {
+        console.error(e);
+        statusEl.textContent = `❌ 出題失敗：${e.message}`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function exportBackup() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `toeic_600_study_backup_${formatDate(new Date())}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Initialize on load
+    window.addEventListener("DOMContentLoaded", () => {
+      loadState();
+      updateHeaderAndBadges();
+      populateSettingsForm();
+      renderToday();
+      renderPlan();
+      renderQuestionBank();
+    });
+  </script>
+</body>
+</html>
