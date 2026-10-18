@@ -583,7 +583,156 @@
       .header-top { flex-direction: column; align-items: flex-start; }
       .plan-item { flex-direction: column; align-items: flex-start; }
     }
+
+    .toast-banner {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--navy-900);
+      color: #FFF;
+      padding: 0.85rem 1.25rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow-md);
+      border-left: 4px solid var(--accent-gold);
+      font-size: 0.92rem;
+      font-weight: 600;
+      z-index: 9999;
+      display: none;
+      max-width: 380px;
+    }
+
+    /* Vocabulary Module Styles */
+    .vocab-subtabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .subtab-btn {
+      padding: 0.55rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid var(--warm-border);
+      background: var(--warm-surface);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .subtab-btn.active {
+      background: var(--navy-800);
+      color: #FFF;
+      border-color: var(--navy-800);
+    }
+
+    .flashcard-wrap {
+      max-width: 680px;
+      margin: 0.5rem auto 1.25rem;
+    }
+
+    .flashcard-box {
+      background: linear-gradient(145deg, #FFFFFF 0%, #FAF7F2 100%);
+      border: 2px solid var(--warm-border);
+      border-top: 5px solid var(--navy-800);
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
+      min-height: 270px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      position: relative;
+    }
+
+    .flashcard-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(15, 35, 60, 0.13);
+    }
+
+    .fc-word-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .fc-pos {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      background: var(--accent-gold-light);
+      padding: 0.2rem 0.65rem;
+      border-radius: 6px;
+    }
+
+    .fc-meaning {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--navy-800);
+      margin: 0.85rem 0 0.5rem;
+    }
+
+    .fc-example {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      background: var(--warm-surface);
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      border-left: 4px solid var(--accent-gold);
+      margin-top: 0.65rem;
+    }
+
+    .audio-btn {
+      background: var(--navy-100);
+      color: var(--navy-800);
+      border: 1px solid rgba(27, 54, 93, 0.2);
+      border-radius: 999px;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.15s;
+    }
+
+    .audio-btn:hover {
+      background: var(--navy-800);
+      color: #FFF;
+    }
+
+    .header-dl-btn {
+      background: var(--accent-gold);
+      color: #FFF;
+      border: none;
+      padding: 0.38rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+      transition: all 0.18s;
+    }
+
+    .header-dl-btn:hover {
+      background: #b17822;
+      transform: translateY(-1px);
+    }
   </style>
+
+
 </head>
 <body>
 
@@ -593,16 +742,19 @@
         <span class="brand-badge">TOEIC 600</span>
         <h1>多益 AI 備考神器</h1>
       </div>
-      <div class="header-stats">
+      <div class="header-stats" style="align-items:center;">
         <span>距離考試：<strong id="hdr-days-left">--</strong> 天</span>
         <span>目標：<strong id="hdr-target-score">600</strong> 分</span>
         <span>題庫：<strong id="hdr-q-count">30</strong> 題</span>
+        <span>單字：<strong id="hdr-v-count">36</strong> 字</span>
+        <button class="header-dl-btn" onclick="downloadHtmlFile()" title="下載完整單一 HTML 檔案（可直接上傳 GitHub 或離線使用）">📥 下載 HTML 檔</button>
       </div>
     </div>
     <nav class="tabs">
       <button class="tab-btn active" onclick="switchTab('today')">📅 今日</button>
       <button class="tab-btn" onclick="switchTab('plan')">🗺️ 計畫</button>
       <button class="tab-btn" onclick="switchTab('mock')">📝 模擬考</button>
+      <button class="tab-btn" onclick="switchTab('vocab')">🔤 單字特訓 <span class="badge-count" id="nav-vocab-count">36</span></button>
       <button class="tab-btn" onclick="switchTab('wrong')">📕 錯題本 <span class="badge-count" id="nav-wrong-count">0</span></button>
       <button class="tab-btn" onclick="switchTab('bank')">📚 題庫 <span class="badge-count" id="nav-bank-count">30</span></button>
       <button class="tab-btn" onclick="switchTab('settings')">⚙️ 設定</button>
@@ -638,8 +790,9 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title">🎯 今日學習任務（<span id="td-today-date"></span>）</div>
-          <div>
+          <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
             <button class="btn btn-primary btn-sm" onclick="switchTab('mock')">⚡ 立即測驗 5 題</button>
+            <button class="btn btn-gold btn-sm" onclick="switchTab('vocab')">🔤 單字刷題特訓</button>
             <button class="btn btn-outline btn-sm" onclick="switchTab('plan')">檢視完整計畫</button>
           </div>
         </div>
@@ -723,6 +876,215 @@
         <div style="margin-top:1.25rem; display:flex; gap:0.75rem; justify-content:flex-end;">
           <button class="btn btn-primary" id="mock-submit-btn" onclick="submitMockExam()">✅ 交卷並看詳解</button>
           <button class="btn btn-gold" id="mock-retry-btn" style="display:none;" onclick="resetMockView()">🔄 再測驗一次</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.5 單字特訓 (VOCABULARY TRAINER) -->
+    <section id="tab-vocab" class="tab-panel">
+      <div class="grid-4">
+        <div class="stat-card">
+          <div class="stat-label">多益 600 核心單字庫</div>
+          <div class="stat-value" id="vc-total-words">36 字</div>
+          <div class="stat-sub">涵蓋 6 大高頻商務情境</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-label">已熟記單字</div>
+          <div class="stat-value" id="vc-mastered-count">0 字</div>
+          <div class="stat-sub" id="vc-mastered-pct">熟練度 0%</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-label">待加強 / 答錯單字</div>
+          <div class="stat-value" id="vc-weak-count">0 字</div>
+          <div class="stat-sub">可一鍵抽題針對弱點重測</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">最近單字測驗正確率</div>
+          <div class="stat-value" id="vc-last-score">尚未測驗</div>
+          <div class="stat-sub" id="vc-quiz-runs">累計完成 0 次單字測驗</div>
+        </div>
+      </div>
+
+      <div class="vocab-subtabs">
+        <button class="subtab-btn active" id="vsub-btn-quiz" onclick="switchVocabSubtab('quiz')">🎯 單字題庫刷題測驗</button>
+        <button class="subtab-btn" id="vsub-btn-card" onclick="switchVocabSubtab('card')">🃏 單字翻轉閃卡（含發音）</button>
+        <button class="subtab-btn" id="vsub-btn-list" onclick="switchVocabSubtab('list')">📖 單字庫總覽 & AI 擴充</button>
+      </div>
+
+      <!-- 子頁籤 A：單字刷題測驗 -->
+      <div id="vsub-quiz">
+        <div class="card" id="vq-setup-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🎯 多益 600 分高頻單字題庫練習</div>
+              <p class="form-hint">支援「多益 Part 5 句子填空」、「英選中快速反應」、「中選英拼字辨識」與「綜合混合出題」四種實戰模式。</p>
+            </div>
+            <span class="tag gold">核心必背單字循環</span>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="vq-mode">選擇測驗題型模式</label>
+              <select id="vq-mode">
+                <option value="cloze" selected>📝 多益 Part 5 語境句子填空（最貼近實戰考題）</option>
+                <option value="en2zh">🔤 英選中：看英文單字選中文語意（訓練閱讀秒殺力）</option>
+                <option value="zh2en">🇹🇼 中選英：看中文解釋選正確英文單字（強化單字記憶）</option>
+                <option value="mixed">🔥 綜合混合模式（填空 + 英選中 + 中選英隨機出題）</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="vq-category">選擇商務主題分類</label>
+              <select id="vq-category">
+                <option value="ALL" selected>全部主題（6 大商務情境隨機抽題）</option>
+                <option value="商務合約與法務">📑 商務合約與法務（Contracts & Legal）</option>
+                <option value="人資與職場行政">👥 人資與職場行政（HR & Office）</option>
+                <option value="行銷與業務銷售">📈 行銷與業務銷售（Marketing & Sales）</option>
+                <option value="財務會計與採購">💰 財務會計與採購（Finance & Purchasing）</option>
+                <option value="物流製造與品管">📦 物流製造與品管（Logistics & Manufacturing）</option>
+                <option value="商務差旅與會議">✈️ 商務差旅與會議（Travel & Conferences）</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="vq-count">測驗題數</label>
+              <select id="vq-count">
+                <option value="5">5 題（1 分鐘極速刷題）</option>
+                <option value="10" selected>10 題（日常標準單字特訓）</option>
+                <option value="15">15 題（進階強化練習）</option>
+                <option value="20">20 題（深度單字檢測）</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="vq-scope">抽題範圍篩選</label>
+              <select id="vq-scope">
+                <option value="ALL" selected>全部單字（包含已熟記與未測驗）</option>
+                <option value="UNMASTERED">排除已標記「熟記」的單字</option>
+                <option value="WEAK">只測驗「待加強 / 曾答錯」的弱點單字</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:0.25rem;">
+            <button class="btn btn-primary" onclick="startVocabQuiz(false)">🚀 開始單字測驗</button>
+            <button class="btn btn-outline" onclick="startVocabQuiz(true)">📕 立即重測待加強單字</button>
+          </div>
+        </div>
+
+        <div class="card" id="vq-active-card" style="display:none;">
+          <div class="card-header">
+            <div class="card-title" id="vq-active-title">進行中：多益單字特訓</div>
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span class="timer-badge" id="vq-timer">00:00</span>
+              <button class="btn btn-outline btn-sm" onclick="resetVocabQuizView()">結束返回</button>
+            </div>
+          </div>
+          <div id="vq-result-banner" style="display:none;"></div>
+          <div id="vq-questions-container"></div>
+          <div style="margin-top:1.25rem; display:flex; gap:0.75rem; justify-content:flex-end;">
+            <button class="btn btn-primary" id="vq-submit-btn" onclick="submitVocabQuiz()">✅ 交卷並看單字詳解</button>
+            <button class="btn btn-gold" id="vq-retry-btn" style="display:none;" onclick="resetVocabQuizView()">🔄 再練一組單字</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 子頁籤 B：單字翻轉閃卡 -->
+      <div id="vsub-card" style="display:none;">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🃏 多益高頻單字記憶閃卡（支援美式英語發音）</div>
+              <p class="form-hint">點擊卡片可切換「顯示／隱藏」中文詳解與例句，並可隨時標記「已熟記」或「待加強」。</p>
+            </div>
+            <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+              <select id="fc-filter-cat" onchange="initFlashcards()" style="width:210px;">
+                <option value="ALL">全部主題（36+ 字）</option>
+                <option value="WEAK">📕 只看待加強單字</option>
+                <option value="商務合約與法務">📑 商務合約與法務</option>
+                <option value="人資與職場行政">👥 人資與職場行政</option>
+                <option value="行銷與業務銷售">📈 行銷與業務銷售</option>
+                <option value="財務會計與採購">💰 財務會計與採購</option>
+                <option value="物流製造與品管">📦 物流製造與品管</option>
+                <option value="商務差旅與會議">✈️ 商務差旅與會議</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flashcard-wrap" id="fc-stage"></div>
+
+          <div style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; margin-top:0.5rem;">
+            <button class="btn btn-outline" onclick="prevFlashcard()">⬅️ 上一個</button>
+            <button class="btn btn-outline" onclick="flipFlashcard()">🔄 翻面看例句詳解</button>
+            <button class="btn btn-gold" id="fc-mark-weak-btn" onclick="toggleCurrentCardWeak()">📌 標記待加強</button>
+            <button class="btn btn-primary" id="fc-mark-master-btn" onclick="toggleCurrentCardMastered()">⭐ 標記已熟記</button>
+            <button class="btn btn-outline" onclick="nextFlashcard()">下一個 ➡️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 子頁籤 C：單字庫總覽 & AI 生成 -->
+      <div id="vsub-list" style="display:none;">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">✨ 用 Gemini AI 自動擴充多益單字題庫</div>
+              <p class="form-hint">選擇你想加強的商務情境，Gemini 3.8 Flash 會自動生成 5 個高頻單字、搭配詞與 Part 5 填空練習題。</p>
+            </div>
+            <span class="tag gold">Gemini 3.8 Flash</span>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="ai-vocab-cat">選擇要生成的單字主題</label>
+              <select id="ai-vocab-cat">
+                <option value="商務合約與法務">📑 商務合約與法務</option>
+                <option value="人資與職場行政">👥 人資與職場行政</option>
+                <option value="行銷與業務銷售">📈 行銷與業務銷售</option>
+                <option value="財務會計與採購">💰 財務會計與採購</option>
+                <option value="物流製造與品管">📦 物流製造與品管</option>
+                <option value="商務差旅與會議">✈️ 商務差旅與會議</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ai-vocab-level">難度定位</label>
+              <select id="ai-vocab-level">
+                <option value="450-550分基礎必背">基礎必背（450–550 分核心字彙）</option>
+                <option value="600分高頻核心" selected>目標核心（600 分必考高頻商務字彙）</option>
+                <option value="700分進階商務">進階挑戰（700 分以上高分同義字）</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+            <button class="btn btn-gold" id="btn-ai-vocab" onclick="generateVocabWithGemini()">🤖 用 Gemini 生成 5 個新單字與考題</button>
+            <span id="ai-vocab-status" style="font-size:0.88rem; color:var(--navy-700); font-weight:600;"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📖 多益單字總覽（共 <span id="vc-table-count">36</span> 字）</div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <input type="text" id="vc-search" placeholder="搜尋英文單字、中文或搭配詞..." oninput="renderVocabTable()" style="width:220px;" />
+              <select id="vc-list-cat" onchange="renderVocabTable()" style="width:190px;">
+                <option value="ALL">全部商務主題</option>
+                <option value="商務合約與法務">商務合約與法務</option>
+                <option value="人資與職場行政">人資與職場行政</option>
+                <option value="行銷與業務銷售">行銷與業務銷售</option>
+                <option value="財務會計與採購">財務會計與採購</option>
+                <option value="物流製造與品管">物流製造與品管</option>
+                <option value="商務差旅與會議">商務差旅與會議</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:165px;">單字 / 發音</th>
+                  <th style="width:130px;">主題分類</th>
+                  <th style="width:180px;">中文語意與搭配詞</th>
+                  <th>多益實戰例句</th>
+                  <th style="width:110px;">狀態標記</th>
+                </tr>
+              </thead>
+              <tbody id="vc-table-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
@@ -885,14 +1247,14 @@
           <div class="form-group">
             <label for="set-gemini-model">Gemini 模型選擇</label>
             <select id="set-gemini-model">
-              <option value="gemini-3.8-flash" selected>gemini-3.8-flash（推薦：速度快、成本極低）</option>
-              <option value="gemini-2.5-pro">gemini-2.5-pro（深度推理與長篇閱讀）</option>
-              <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+              <option value="gemini-3.8-flash" selected>gemini-3.8-flash（最新推薦：速度快、相容所有新舊金鑰）</option>
+              <option value="gemini-3.8-pro">gemini-3.8-pro（深度推理與長篇閱讀）</option>
             </select>
           </div>
         </div>
         <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:0.5rem;">
           <button class="btn btn-primary" onclick="saveSettings()">💾 儲存設定並更新計畫</button>
+          <button class="btn btn-gold" onclick="downloadHtmlFile()">📥 下載完整網頁檔 (index.html)</button>
           <button class="btn btn-outline" onclick="syncFromGoogleSheet()">🔄 測試同步 Google 試算表題庫</button>
           <button class="btn btn-outline" onclick="exportBackup()">📤 匯出學習紀錄備份 (JSON)</button>
         </div>
@@ -901,6 +1263,7 @@
     </section>
   </main>
 
+  <div id="app-toast" class="toast-banner"></div>
   <footer>
     多益 TOEIC 600分 AI 備考神器 ｜ 海軍藍 × 暖白專屬介面 ｜ 支援本機儲存 (LocalStorage)、Google Sheets 題庫同步與 Gemini API 自動出題
   </footer>
@@ -1388,6 +1751,337 @@
     "createdAt": "2026-10-17"
   }
 ];
+
+    const BUILTIN_VOCAB = [
+      {
+        id: "V001", word: "contract", pos: "n.", meaning: "合約、契約",
+        category: "商務合約與法務",
+        collocation: "sign / renew / terminate a contract（簽署／續約／終止合約）",
+        sentence: "Both parties agreed to sign the service _______ before the end of the fiscal year.",
+        options: { A: "contract", B: "contact", C: "contrast", D: "content" },
+        answer: "A",
+        explanation: "sign the service contract 意為「簽署服務合約」。contact 為聯絡，contrast 為對比。"
+      },
+      {
+        id: "V002", word: "negotiate", pos: "v.", meaning: "協商、談判",
+        category: "商務合約與法務",
+        collocation: "negotiate a deal / terms（協商交易條件）",
+        sentence: "Our legal team will _______ better payment terms with the overseas vendor.",
+        options: { A: "negotiate", B: "hesitate", C: "participate", D: "duplicate" },
+        answer: "A",
+        explanation: "negotiate payment terms 為多益高頻搭配，意為「協商付款條件」。"
+      },
+      {
+        id: "V003", word: "comply", pos: "v.", meaning: "遵守、依從",
+        category: "商務合約與法務",
+        collocation: "comply with regulations / safety standards（遵守法規／安全標準）",
+        sentence: "All manufacturing plants must _______ strictly with environmental protection laws.",
+        options: { A: "rely", B: "apply", C: "comply", D: "supply" },
+        answer: "C",
+        explanation: "固定搭配 comply with（遵守…法規或標準），是多益 Part 5 每年必考片語。"
+      },
+      {
+        id: "V004", word: "expire", pos: "v.", meaning: "到期、期滿",
+        category: "商務合約與法務",
+        collocation: "membership / warranty / contract expires（會籍／保固／合約到期）",
+        sentence: "Please note that your current software license will _______ on December 31.",
+        options: { A: "inspire", B: "expire", C: "require", D: "acquire" },
+        answer: "B",
+        explanation: "合約、執照、會員資格或保固「到期」使用 expire。"
+      },
+      {
+        id: "V005", word: "assurance", pos: "n.", meaning: "保證、擔保",
+        category: "商務合約與法務",
+        collocation: "quality assurance (QA) / give assurance（品質保證／給予承諾）",
+        sentence: "The contractor gave us his _______ that the renovation would be finished on time.",
+        options: { A: "assurance", B: "insurance", C: "endurance", D: "appearance" },
+        answer: "A",
+        explanation: "give someone's assurance that... 表示「向某人保證…」。insurance 為保險。"
+      },
+      {
+        id: "V006", word: "confidential", pos: "adj.", meaning: "機密的、保密的",
+        category: "商務合約與法務",
+        collocation: "strictly confidential information / documents（絕對機密資訊）",
+        sentence: "Employees are reminded to keep all client financial records strictly _______.",
+        options: { A: "confident", B: "confidential", C: "confidently", D: "confidence" },
+        answer: "B",
+        explanation: "keep + 受詞 + 形容詞補語 confidential（保密的、機密的）。confident 則是「有自信的」。"
+      },
+      {
+        id: "V007", word: "candidate", pos: "n.", meaning: "候選人、應徵者",
+        category: "人資與職場行政",
+        collocation: "qualified candidate / interview candidates（合格應徵者）",
+        sentence: "The hiring committee interviewed five _______ for the senior accountant position.",
+        options: { A: "candidates", B: "passengers", C: "pedestrians", D: "spectators" },
+        answer: "A",
+        explanation: "應徵職缺的「候選人、求職者」為 candidate。"
+      },
+      {
+        id: "V008", word: "eligible", pos: "adj.", meaning: "符合資格的",
+        category: "人資與職場行政",
+        collocation: "be eligible for a bonus / promotion（符合領取獎金／升遷資格）",
+        sentence: "Part-time staff who work over 20 hours a week are _______ for health insurance.",
+        options: { A: "legible", B: "eligible", C: "flexible", D: "visible" },
+        answer: "B",
+        explanation: "be eligible for + N / to V 表示「有資格獲得…」。legible 為字跡清晰可辨的。"
+      },
+      {
+        id: "V009", word: "mandatory", pos: "adj.", meaning: "強制性的、必修的",
+        category: "人資與職場行政",
+        collocation: "mandatory training / attendance（強制性訓練／必修出席）",
+        sentence: "Wearing protective helmets is _______ for everyone entering the construction site.",
+        options: { A: "mandatory", B: "voluntary", C: "temporary", D: "complimentary" },
+        answer: "A",
+        explanation: "進入工地戴安全帽是「強制規定的（mandatory）」。voluntary 為自願的，complimentary 為免費贈送的。"
+      },
+      {
+        id: "V010", word: "orientation", pos: "n.", meaning: "新進人員訓練、職前說明會",
+        category: "人資與職場行政",
+        collocation: "new employee orientation session（新進員工訓練）",
+        sentence: "All new hires must attend the full-day _______ in Conference Room A on Monday.",
+        options: { A: "orientation", B: "destination", C: "reservation", D: "reputation" },
+        answer: "A",
+        explanation: "多益職場情境中，new hires（新進人員）參加的職前訓練稱為 orientation。"
+      },
+      {
+        id: "V011", word: "promote", pos: "v.", meaning: "升遷；促銷、推廣",
+        category: "人資與職場行政",
+        collocation: "be promoted to manager / promote a new product（晉升為經理／推廣新產品）",
+        sentence: "Ms.吳 was _______ to Regional Sales Director after exceeding her annual targets.",
+        options: { A: "promoted", B: "prevented", C: "predicted", D: "protected" },
+        answer: "A",
+        explanation: "be promoted to + 職稱 表示「被晉升為…」。"
+      },
+      {
+        id: "V012", word: "supervise", pos: "v.", meaning: "監督、管理、指導",
+        category: "人資與職場行政",
+        collocation: "supervise daily operations / interns（監督日常營運／指導實習生）",
+        sentence: "The shift manager is responsible for _______ twelve assembly line workers.",
+        options: { A: "supervising", B: "apologizing", C: "compromising", D: "advertising" },
+        answer: "A",
+        explanation: "管理並監督生產線人員使用 supervise（名詞為 supervisor 主管、監督者）。"
+      },
+      {
+        id: "V013", word: "launch", pos: "v./n.", meaning: "推出（新產品）、發起",
+        category: "行銷與業務銷售",
+        collocation: "launch a marketing campaign / product launch（推出行銷活動／新品發表）",
+        sentence: " Aura Cosmetics plans to _______ its new organic skincare line in early spring.",
+        options: { A: "launch", B: "lounge", C: "branch", D: "attach" },
+        answer: "A",
+        explanation: "推出新產品或新服務固定使用動詞 launch。"
+      },
+      {
+        id: "V014", word: "survey", pos: "n./v.", meaning: "問卷調查、市調",
+        category: "行銷與業務銷售",
+        collocation: "conduct / complete a customer satisfaction survey（進行／填寫顧客滿意度調查）",
+        sentence: "According to a recent market _______, 78% of consumers prefer eco-friendly packaging.",
+        options: { A: "survey", B: "surface", C: "surplus", D: "survival" },
+        answer: "A",
+        explanation: "market survey 意為「市場調查」。surplus 為過剩、盈餘。"
+      },
+      {
+        id: "V015", word: "complimentary", pos: "adj.", meaning: "免費贈送的、招待的",
+        category: "行銷與業務銷售",
+        collocation: "complimentary breakfast / shuttle / sample（免費早餐／接駁車／試用品）",
+        sentence: "First-class passengers receive _______ beverages and meals throughout the flight.",
+        options: { A: "complimentary", B: "complementary", C: "complicated", D: "competitive" },
+        answer: "A",
+        explanation: "注意拼字：complimentary（中間是 i）代表「免費贈送的」；complementary（中間是 e）則是「互補的」。"
+      },
+      {
+        id: "V016", word: "competitive", pos: "adj.", meaning: "具競爭力的",
+        category: "行銷與業務銷售",
+        collocation: "competitive price / salary / advantage（具競爭力的價格／薪資／優勢）",
+        sentence: "We offer high-quality office furniture at very _______ prices.",
+        options: { A: "compete", B: "competition", C: "competitive", D: "competitor" },
+        answer: "C",
+        explanation: "at competitive prices 為多益必背片語，意為「以具競爭力的實惠價格」。"
+      },
+      {
+        id: "V017", word: "Demonstrate", pos: "v.", meaning: "示範、展示；證明",
+        category: "行銷與業務銷售",
+        collocation: "demonstrate how the device works（示範設備如何運作）",
+        sentence: "A sales representative will _______ the features of our new smart printer at the trade show.",
+        options: { A: "demonstrate", B: "participate", C: "concentrate", D: "cooperate" },
+        answer: "A",
+        explanation: "在展覽上「現場示範、展示」產品功能使用 demonstrate。"
+      },
+      {
+        id: "V018", word: "strategy", pos: "n.", meaning: "策略、規劃",
+        category: "行銷與業務銷售",
+        collocation: "develop a marketing / pricing strategy（制定行銷／定價策略）",
+        sentence: "The board approved a new digital advertising _______ to attract younger customers.",
+        options: { A: "strategy", B: "tragedy", C: "scenery", D: "currency" },
+        answer: "A",
+        explanation: "advertising strategy 意為「廣告策略」。"
+      },
+      {
+        id: "V019", word: "invoice", pos: "n.", meaning: "發票、請款單",
+        category: "財務會計與採購",
+        collocation: "issue / pay / settle an invoice（開立／支付／結清請款單）",
+        sentence: "Please remit payment within 30 days of receiving the attached _______.",
+        options: { A: "invoice", B: "advice", C: "device", D: "voice" },
+        answer: "A",
+        explanation: "商務交易中供應商寄給買方的「請款單、發票」稱為 invoice。"
+      },
+      {
+        id: "V020", word: "receipt", pos: "n.", meaning: "收據；收到",
+        category: "財務會計與採購",
+        collocation: "keep the original receipt / upon receipt of（保留收據正本／一收到…）",
+        sentence: "To claim a full refund, customers must present the original purchase _______.",
+        options: { A: "recipe", B: "receipt", C: "reception", D: "deceit" },
+        answer: "B",
+        explanation: "辦理退費須出示購買「收據（receipt）」。recipe 為食譜，reception 為接待櫃檯。"
+      },
+      {
+        id: "V021", word: "budget", pos: "n./v.", meaning: "預算",
+        category: "財務會計與採購",
+        collocation: "annual budget / within budget /exceed the budget（年度預算／在預算內／超支）",
+        sentence: "Thanks to careful planning, the office remodeling project was completed under _______.",
+        options: { A: "budget", B: "badger", C: "bucket", D: "banquet" },
+        answer: "A",
+        explanation: "under budget / within budget 表示「控制在預算之內完成」。banquet 為宴會。"
+      },
+      {
+        id: "V022", word: "reimburse", pos: "v.", meaning: "核銷、補償、報帳",
+        category: "財務會計與採購",
+        collocation: "reimburse employees for travel expenses（為員工核銷差旅費）",
+        sentence: "The company will _______ you for all accommodation and meal expenses during the business trip.",
+        options: { A: "reimburse", B: "reinforce", C: "rehearse", D: "resemble" },
+        answer: "A",
+        explanation: "reimburse A for B 意為「核銷／歸還 A 代墊的 B 費用」，名詞為 reimbursement。"
+      },
+      {
+        id: "V023", word: "estimate", pos: "n./v.", meaning: "估價（單）、預估",
+        category: "財務會計與採購",
+        collocation: "provide a written cost estimate（提供書面估價單）",
+        sentence: "Before starting the repair work, the mechanic provided a free cost _______.",
+        options: { A: "estimate", B: "climate", C: "teammate", D: "estate" },
+        answer: "A",
+        explanation: "cost estimate 為「費用預估、估價單」。real estate 則是房地產。"
+      },
+      {
+        id: "V024", word: "affordable", pos: "adj.", meaning: "負擔得起的、價格實惠的",
+        category: "財務會計與採購",
+        collocation: "affordable housing / prices / rates（平價實惠的價格）",
+        sentence: "CloudSync offers _______ subscription plans tailored for startups and freelancers.",
+        options: { A: "affordable", B: "avoidable", C: "portable", D: "washable" },
+        answer: "A",
+        explanation: "affordable 源自 afford（負擔得起），形容價格親民實惠。"
+      },
+      {
+        id: "V025", word: "inventory", pos: "n.", meaning: "庫存、存貨盤點",
+        category: "物流製造與品管",
+        collocation: "manage inventory / conduct an inventory check（管理庫存／進行盤點）",
+        sentence: "Our retail store will close early this Sunday to conduct an annual _______ count.",
+        options: { A: "inventory", B: "invention", C: "invitation", D: "investment" },
+        answer: "A",
+        explanation: "inventory 指倉庫或商店的「庫存商品、盤點」。"
+      },
+      {
+        id: "V026", word: "defective", pos: "adj.", meaning: "有瑕疵的、故障的",
+        category: "物流製造與品管",
+        collocation: "replace a defective part / product（更換瑕疵零件／產品）",
+        sentence: "Any _______ merchandise can be exchanged within 14 days of delivery.",
+        options: { A: "defective", B: "effective", C: "objective", D: "protective" },
+        answer: "A",
+        explanation: "defective merchandise 意為「瑕疵商品」。effective 為有效的。"
+      },
+      {
+        id: "V027", word: "shipment", pos: "n.", meaning: "運送、一批貨物",
+        category: "物流製造與品管",
+        collocation: "track a shipment / delayed shipment（追蹤貨件／延遲出貨）",
+        sentence: "The _______ of electronic components from Kaohsiung arrived two days ahead of schedule.",
+        options: { A: "shipment", B: "equipment", C: "department", D: "appointment" },
+        answer: "A",
+        explanation: "a shipment of... 表示「一批運送的貨物」。equipment 為不可數名詞（設備）。"
+      },
+      {
+        id: "V028", word: "inspect", pos: "v.", meaning: "檢查、視察、檢驗",
+        category: "物流製造與品管",
+        collocation: "inspect the facility / quality inspection（視察廠房／品質檢驗）",
+        sentence: "Quality control officers carefully _______ every vehicle before it leaves the factory.",
+        options: { A: "inspect", B: "expect", C: "respect", D: "suspect" },
+        answer: "A",
+        explanation: "品管人員「檢驗、檢查」產品使用 inspect（名詞為 inspection）。"
+      },
+      {
+        id: "V029", word: "warehouse", pos: "n.", meaning: "倉庫、大型倉儲",
+        category: "物流製造與品管",
+        collocation: "central warehouse / warehouse staff（中央倉庫／倉儲人員）",
+        sentence: "Orders placed before noon are dispatched directly from our main _______ in Taoyuan.",
+        options: { A: "warehouse", B: "greenhouse", C: "courthouse", D: "penthouse" },
+        answer: "A",
+        explanation: "存放貨物並出貨的「倉庫」為 warehouse。"
+      },
+      {
+        id: "V030", word: "equipment", pos: "n.", meaning: "設備、器材（不可數）",
+        category: "物流製造與品管",
+        collocation: "safety equipment / office equipment（安全器材／辦公設備）",
+        sentence: "The laboratory recently purchased state-of-the-art testing _______.",
+        options: { A: "equipment", B: "equipments", C: "equip", D: "equipped" },
+        answer: "A",
+        explanation: "多益常考陷阱：equipment 為不可數名詞，字尾永遠不加 s！"
+      },
+      {
+        id: "V031", word: "itinerary", pos: "n.", meaning: "行程表、旅遊日程",
+        category: "商務差旅與會議",
+        collocation: "travel itinerary / revise the itinerary（差旅行程表／修改行程）",
+        sentence: "Ms. Chen's assistant e-mailed her the finalized travel _______ for her trip to Singapore.",
+        options: { A: "itinerary", B: "stationery", C: "machinery", D: "anniversary" },
+        answer: "A",
+        explanation: "travel itinerary 意為「出差或旅遊的詳細行程表」。stationery 為文具。"
+      },
+      {
+        id: "V032", word: "accommodation", pos: "n.", meaning: "住宿、膳宿安排",
+        category: "商務差旅與會議",
+        collocation: "hotel accommodations / book accommodation（飯店住宿安排）",
+        sentence: "The conference registration fee includesworkshop materials and two nights of hotel _______.",
+        options: { A: "accommodations", B: "recommendations", C: "qualifications", D: "communications" },
+        answer: "A",
+        explanation: "hotel accommodations 指「飯店住宿」。"
+      },
+      {
+        id: "V033", word: "postpone", pos: "v.", meaning: "延期、延後",
+        category: "商務差旅與會議",
+        collocation: "postpone the meeting until next week（將會議順延至下週）",
+        sentence: "Due to the approaching typhoon, the outdoor trade fair has been _______ until next Saturday.",
+        options: { A: "postponed", B: "canceled", C: "attended", D: "contained" },
+        answer: "A",
+        explanation: "後方接 until next Saturday（直到下週六），代表活動「延期（postponed）」而非取消。"
+      },
+      {
+        id: "V034", word: "venue", pos: "n.", meaning: "舉辦地點、會場",
+        category: "商務差旅與會議",
+        collocation: "conference venue / change the venue（會議場地／更換會場）",
+        sentence: "The Grand Convention Center is an ideal _______ for our annual shareholders' meeting.",
+        options: { A: "venue", B: "avenue", C: "revenue", D: "statue" },
+        answer: "A",
+        explanation: "活動、大型會議或演唱會的「舉辦場地、會場」稱為 venue。revenue 為營收，avenue 為大道。"
+      },
+      {
+        id: "V035", word: "confirm", pos: "v.", meaning: "確認（預約、航班、出席）",
+        category: "商務差旅與會議",
+        collocation: "confirm a reservation / flight confirmation（確認訂位／航班確認信）",
+        sentence: "Please call the front desk by 6:00 P.M. to _______ your banquet table reservation.",
+        options: { A: "confirm", B: "conform", C: "confront", D: "confuse" },
+        answer: "A",
+        explanation: "confirm a reservation 為「確認預約／訂位」。conform 則常搭配 to（遵守、符合）。"
+      },
+      {
+        id: "V036", word: "shuttle", pos: "n.", meaning: "接駁車、接駁巴士",
+        category: "商務差旅與會議",
+        collocation: "take the airport shuttle bus（搭乘機場接駁車）",
+        sentence: "A free _______ bus runs between the train station and the exhibition hall every 15 minutes.",
+        options: { A: "shuttle", B: "subtle", C: "hurdle", D: "kettle" },
+        answer: "A",
+        explanation: "shuttle bus 意為「往返兩地的接駁巴士」。"
+      }
+    ].map(item => ({
+      ...item,
+      sentence: item.sentence.replace("includesworkshop", "includes workshop")
+    }));
+
     const DEFAULT_SHEET_CSV = "https://docs.google.com/spreadsheets/d/1LNDkKO3YKBrl4nuEW2XEO7tuY8Tv4G-T9zG4t6H7Obo/gviz/tq?tqx=out:csv";
     const STORAGE_KEY = "toeic_600_ai_study_app_v1";
 
@@ -1412,6 +2106,10 @@
       },
       plan: [],
       questions: [...BUILTIN_QUESTIONS],
+      vocab: [...BUILTIN_VOCAB],
+      masteredVocab: {},  // vocabId -> true
+      weakVocab: {},      // vocabId -> { count, updatedAt }
+      vocabHistory: [],   // { date, mode, correct, total, score }
       wrongQuestions: {}, // id -> { count, lastWrongOption, timestamp }
       examHistory: []     // { date, score, correct, total, mode }
     };
@@ -1424,6 +2122,16 @@
       timerInterval: null,
       isWrongMode: false
     };
+
+
+    function showToast(msg) {
+      const el = document.getElementById("app-toast");
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => { el.style.display = "none"; }, 4000);
+    }
 
     function formatDate(d) {
       const year = d.getFullYear();
@@ -1446,8 +2154,20 @@
           if (Array.isArray(parsed.questions) && parsed.questions.length > 0) {
             state.questions = parsed.questions;
           }
+          if (Array.isArray(parsed.vocab) && parsed.vocab.length > 0) {
+            const vMap = new Map();
+            BUILTIN_VOCAB.forEach(v => vMap.set(v.id, v));
+            parsed.vocab.forEach(v => vMap.set(v.id, v));
+            state.vocab = Array.from(vMap.values());
+          }
+          state.masteredVocab = parsed.masteredVocab || {};
+          state.weakVocab = parsed.weakVocab || {};
+          state.vocabHistory = Array.isArray(parsed.vocabHistory) ? parsed.vocabHistory : [];
           state.wrongQuestions = parsed.wrongQuestions || {};
           state.examHistory = Array.isArray(parsed.examHistory) ? parsed.examHistory : [];
+          if (!state.settings.geminiModel || state.settings.geminiModel.startsWith("gemini-2.")) {
+            state.settings.geminiModel = "gemini-3.8-flash";
+          }
         }
       } catch (e) {
         console.warn("讀取本機資料失敗，使用預設值", e);
@@ -1472,13 +2192,14 @@
       const panel = document.getElementById("tab-" + tabId);
       if (panel) panel.classList.add("active");
 
-      const tabOrder = ["today", "plan", "mock", "wrong", "bank", "settings"];
+      const tabOrder = ["today", "plan", "mock", "vocab", "wrong", "bank", "settings"];
       const idx = tabOrder.indexOf(tabId);
       const btns = document.querySelectorAll(".tab-btn");
       if (idx >= 0 && btns[idx]) btns[idx].classList.add("active");
 
       if (tabId === "today") renderToday();
       if (tabId === "plan") renderPlan();
+      if (tabId === "vocab") renderVocabTab();
       if (tabId === "wrong") renderWrongList();
       if (tabId === "bank") renderQuestionBank();
       if (tabId === "settings") populateSettingsForm();
@@ -1495,6 +2216,11 @@
       document.getElementById("hdr-q-count").textContent = state.questions.length;
       document.getElementById("nav-bank-count").textContent = state.questions.length;
       document.getElementById("nav-wrong-count").textContent = Object.keys(state.wrongQuestions).length;
+      const vCount = (state.vocab || []).length;
+      const hdrV = document.getElementById("hdr-v-count");
+      if (hdrV) hdrV.textContent = vCount;
+      const navV = document.getElementById("nav-vocab-count");
+      if (navV) navV.textContent = vCount;
     }
 
     function populateSettingsForm() {
@@ -1554,9 +2280,7 @@
     }
 
     function generateStudyPlan(confirmOverwrite) {
-      if (confirmOverwrite && state.plan.some(p => p.completed)) {
-        if (!confirm("重新生成計畫將會重置目前的打勾紀錄，確定要重新生成嗎？")) return;
-      }
+      if (confirmOverwrite) { showToast("✅ 已根據最新設定重新生成讀書計畫！"); }
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -1730,7 +2454,7 @@
         const wrongIds = Object.keys(state.wrongQuestions);
         pool = state.questions.filter(q => wrongIds.includes(q.id));
         if (pool.length === 0) {
-          alert("目前錯題本是空的！請先進行一般模擬考。");
+          showToast("ℹ️ 目前錯題本是空的！請先進行一般模擬考。");
           switchTab("mock");
           return;
         }
@@ -1931,7 +2655,7 @@
     }
 
     function clearAllWrong() {
-      if (!confirm("確定要清空所有錯題紀錄嗎？")) return;
+      showToast("🗑️ 已清空錯題本紀錄");
       state.wrongQuestions = {};
       saveState();
       renderWrongList();
@@ -2061,27 +2785,28 @@
         saveState();
         renderQuestionBank();
         if (statusEl) statusEl.textContent = `✅ 成功從 Google 試算表同步！目前題庫共 ${state.questions.length} 題。`;
-        alert(`同步成功！已載入 ${imported.length} 題，目前總題庫共 ${state.questions.length} 題。`);
+        showToast(`✅ 同步成功！目前總題庫共 ${state.questions.length} 題。`);
       } catch (err) {
         console.warn("CSV 同步提醒：", err);
         if (statusEl) {
           statusEl.textContent = "ℹ️ 請先在 Google 試算表點選「檔案 → 共用 → 發布到網路 → CSV」以開啟公開讀取權限（目前已預載 30 題可直接使用）。";
         }
-        alert("提示：若要從瀏覽器直接讀取雲端試算表，請先在 Google 試算表點選「檔案 → 共用 → 發布到網路 → 選擇 CSV 格式發布」。目前 App 已內建您的 30 題完整題庫，可直接開始練習！");
+        showToast("ℹ️ 已載入內建 30 題題庫！若需雲端同步請先將試算表發布為 CSV。");
       }
     }
 
     async function generateQuestionsWithGemini() {
       const apiKey = state.settings.geminiApiKey || document.getElementById("set-gemini-key")?.value?.trim();
       if (!apiKey) {
-        alert("請先至「⚙️ 設定」頁面填入您的 Gemini API Key，即可在網頁中一鍵用 AI 出題！");
+        showToast("⚠️ 請先在「⚙️ 設定」頁面填入您的 Gemini API Key！");
         switchTab("settings");
         return;
       }
 
       const part = document.getElementById("ai-gen-part").value;
       const diff = document.getElementById("ai-gen-diff").value;
-      const model = state.settings.geminiModel || "gemini-3.8-flash";
+      const rawModel = state.settings.geminiModel || "gemini-3.8-flash";
+      const model = rawModel.startsWith("gemini-2.") ? "gemini-3.8-flash" : rawModel;
       const statusEl = document.getElementById("ai-gen-status");
       const btn = document.getElementById("btn-ai-generate");
 
@@ -2157,6 +2882,625 @@
       }
     }
 
+
+    // =========================================================================
+    // 單字特訓模組 (Vocabulary Quiz, Flashcards, Pronunciation & AI Expansion)
+    // =========================================================================
+    let currentVocabQuiz = {
+      items: [],
+      userAnswers: {},
+      submitted: false,
+      timerSeconds: 0,
+      timerInterval: null,
+      modeLabel: "多益單字特訓"
+    };
+
+    let fcState = {
+      list: [],
+      index: 0,
+      flipped: false
+    };
+
+    function speakWord(text, ev) {
+      if (ev) ev.stopPropagation();
+      try {
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = "en-US";
+          utter.rate = 0.92;
+          window.speechSynthesis.speak(utter);
+        } else {
+          showToast("ℹ️ 您的瀏覽器不支援語音合成功能");
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function renderVocabTab() {
+      updateVocabStats();
+      initFlashcards();
+      renderVocabTable();
+    }
+
+    function updateVocabStats() {
+      const total = state.vocab.length;
+      const masteredCount = Object.keys(state.masteredVocab || {}).length;
+      const weakCount = Object.keys(state.weakVocab || {}).length;
+      const pct = total > 0 ? Math.round((masteredCount / total) * 100) : 0;
+
+      document.getElementById("vc-total-words").textContent = `${total} 字`;
+      document.getElementById("vc-mastered-count").textContent = `${masteredCount} 字`;
+      document.getElementById("vc-mastered-pct").textContent = `熟練度 ${pct}%`;
+      document.getElementById("vc-weak-count").textContent = `${weakCount} 字`;
+
+      if (state.vocabHistory && state.vocabHistory.length > 0) {
+        const last = state.vocabHistory[state.vocabHistory.length - 1];
+        document.getElementById("vc-last-score").textContent = `${last.score}% (${last.correct}/${last.total})`;
+        document.getElementById("vc-quiz-runs").textContent = `累計完成 ${state.vocabHistory.length} 次單字測驗`;
+      } else {
+        document.getElementById("vc-last-score").textContent = "尚未測驗";
+        document.getElementById("vc-quiz-runs").textContent = "立即挑選題型開始第一組單字刷題";
+      }
+    }
+
+    function switchVocabSubtab(sub) {
+      ["quiz", "card", "list"].forEach(k => {
+        document.getElementById("vsub-" + k).style.display = (k === sub) ? "block" : "none";
+        document.getElementById("vsub-btn-" + k).classList.toggle("active", k === sub);
+      });
+      if (sub === "card") initFlashcards();
+      if (sub === "list") renderVocabTable();
+    }
+
+    function buildDynamicVocabQuestion(v, mode) {
+      const actualMode = mode === "mixed"
+        ? ["cloze", "en2zh", "zh2en"][Math.floor(Math.random() * 3)]
+        : mode;
+
+      if (actualMode === "cloze") {
+        return {
+          qId: "VQ_" + v.id,
+          vocabId: v.id,
+          word: v.word,
+          pos: v.pos,
+          meaning: v.meaning,
+          category: v.category,
+          modeTag: "Part 5 語境填空",
+          prompt: v.sentence,
+          options: { ...v.options },
+          answer: v.answer,
+          explanation: `【${v.word} (${v.pos}) ${v.meaning}】${v.explanation} ｜ 必背搭配：${v.collocation}`
+        };
+      }
+
+      const distractors = state.vocab
+        .filter(other => other.id !== v.id)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+
+      const letters = ["A", "B", "C", "D"];
+      if (actualMode === "en2zh") {
+        const choices = [
+          { text: `${v.pos} ${v.meaning}`, isCorrect: true },
+          ...distractors.map(d => ({ text: `${d.pos} ${d.meaning}`, isCorrect: false }))
+        ].sort(() => Math.random() - 0.5);
+
+        const options = {};
+        let answer = "A";
+        choices.forEach((c, idx) => {
+          const L = letters[idx];
+          options[L] = c.text;
+          if (c.isCorrect) answer = L;
+        });
+
+        return {
+          qId: "VQ_" + v.id,
+          vocabId: v.id,
+          word: v.word,
+          pos: v.pos,
+          meaning: v.meaning,
+          category: v.category,
+          modeTag: "英選中秒殺",
+          prompt: `請選出多益高頻單字「${v.word} (${v.pos})」最正確的中文解釋：
+（常見搭配：${v.collocation.split("（")[0]}）`,
+          options,
+          answer,
+          explanation: `【${v.word} (${v.pos}) ${v.meaning}】例句：${v.sentence.replace("_______", v.options[v.answer])}`
+        };
+      } else {
+        const choices = [
+          { text: `${v.word} (${v.pos})`, isCorrect: true },
+          ...distractors.map(d => ({ text: `${d.word} (${d.pos})`, isCorrect: false }))
+        ].sort(() => Math.random() - 0.5);
+
+        const options = {};
+        let answer = "A";
+        choices.forEach((c, idx) => {
+          const L = letters[idx];
+          options[L] = c.text;
+          if (c.isCorrect) answer = L;
+        });
+
+        return {
+          qId: "VQ_" + v.id,
+          vocabId: v.id,
+          word: v.word,
+          pos: v.pos,
+          meaning: v.meaning,
+          category: v.category,
+          modeTag: "中選英辨識",
+          prompt: `哪一個英文單字的意思是「${v.meaning} (${v.pos})」？
+（搭配提示：${v.collocation}）`,
+          options,
+          answer,
+          explanation: `正確單字為 ${v.word} (${v.pos}) ${v.meaning}。${v.explanation}`
+        };
+      }
+    }
+
+    function startVocabQuiz(forceWeakOnly) {
+      const mode = document.getElementById("vq-mode").value;
+      const cat = document.getElementById("vq-category").value;
+      const scope = forceWeakOnly ? "WEAK" : document.getElementById("vq-scope").value;
+      const count = Number(document.getElementById("vq-count").value) || 10;
+
+      let pool = [...state.vocab];
+      if (cat !== "ALL") {
+        pool = pool.filter(v => v.category === cat);
+      }
+      if (scope === "UNMASTERED") {
+        pool = pool.filter(v => !state.masteredVocab[v.id]);
+      } else if (scope === "WEAK") {
+        const weakIds = Object.keys(state.weakVocab || {});
+        pool = state.vocab.filter(v => weakIds.includes(v.id));
+        if (pool.length === 0) {
+          showToast("ℹ️ 目前沒有「待加強」單字！您可先進行一般單字測驗，或在閃卡中標記待加強單字。");
+          return;
+        }
+      }
+
+      if (pool.length === 0) {
+        showToast("ℹ️ 此篩選條件下沒有單字，已自動切換為全部單字抽題！");
+        pool = [...state.vocab];
+      }
+
+      const selected = pool.sort(() => Math.random() - 0.5).slice(0, Math.min(count, pool.length));
+      const quizItems = selected.map(v => buildDynamicVocabQuestion(v, mode));
+
+      const modeNames = {
+        cloze: "Part 5 語境填空",
+        en2zh: "英選中快速反應",
+        zh2en: "中選英拼字辨識",
+        mixed: "綜合混合出題"
+      };
+
+      currentVocabQuiz = {
+        items: quizItems,
+        userAnswers: {},
+        submitted: false,
+        timerSeconds: 0,
+        timerInterval: null,
+        modeLabel: `${forceWeakOnly ? "弱點單字重測" : modeNames[mode]}（共 ${quizItems.length} 題）`
+      };
+
+      document.getElementById("vq-setup-card").style.display = "none";
+      document.getElementById("vq-active-card").style.display = "block";
+      document.getElementById("vq-result-banner").style.display = "none";
+      document.getElementById("vq-submit-btn").style.display = "inline-flex";
+      document.getElementById("vq-retry-btn").style.display = "none";
+      document.getElementById("vq-active-title").textContent = currentVocabQuiz.modeLabel;
+
+      renderVocabQuizItems();
+
+      clearInterval(currentVocabQuiz.timerInterval);
+      currentVocabQuiz.timerInterval = setInterval(() => {
+        currentVocabQuiz.timerSeconds++;
+        const mins = String(Math.floor(currentVocabQuiz.timerSeconds / 60)).padStart(2, "0");
+        const secs = String(currentVocabQuiz.timerSeconds % 60).padStart(2, "0");
+        document.getElementById("vq-timer").textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function selectVocabAnswer(qId, optKey) {
+      if (currentVocabQuiz.submitted) return;
+      currentVocabQuiz.userAnswers[qId] = optKey;
+    }
+
+    function renderVocabQuizItems() {
+      const container = document.getElementById("vq-questions-container");
+      container.innerHTML = currentVocabQuiz.items.map((item, idx) => {
+        const userAns = currentVocabQuiz.userAnswers[item.qId];
+        const isSub = currentVocabQuiz.submitted;
+
+        const optsHtml = ["A", "B", "C", "D"].map(optKey => {
+          let cls = "option-label";
+          if (isSub) {
+            if (optKey === item.answer) cls += " correct";
+            else if (userAns === optKey && userAns !== item.answer) cls += " wrong";
+          }
+          const checked = userAns === optKey ? "checked" : "";
+          const disabled = isSub ? "disabled" : "";
+          return `
+            <label class="${cls}">
+              <input type="radio" name="vq_${item.qId}" value="${optKey}" ${checked} ${disabled} onchange="selectVocabAnswer('${item.qId}', '${optKey}')" />
+              <span><strong>(${optKey})</strong> ${item.options[optKey] || ""}</span>
+            </label>
+          `;
+        }).join("");
+
+        const expHtml = isSub ? `
+          <div class="explanation-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+              <strong>${userAns === item.answer ? "✅ 答對了！" : `❌ 答錯了（您的作答：${userAns || "未作答"} ／ 正確答案：${item.answer}）`}</strong>
+              <button class="audio-btn" onclick="speakWord('${item.word.replace(/'/g, "\'")}', event)">🔊 聽單字發音 (${item.word})</button>
+            </div>
+            <div style="margin-top:0.35rem;">💡 ${item.explanation}</div>
+          </div>
+        ` : "";
+
+        return `
+          <div class="question-box">
+            <div class="question-meta">
+              <span><strong>第 ${idx + 1} 題</strong> ｜ ${item.vocabId}</span>
+              <div style="display:flex; gap:0.4rem; align-items:center;">
+                <button class="audio-btn" onclick="speakWord('${item.word.replace(/'/g, "\'")}', event)">🔊 發音</button>
+                <span class="tag">${item.category}</span>
+                <span class="tag gold">${item.modeTag}</span>
+              </div>
+            </div>
+            <div class="question-text">${item.prompt}</div>
+            <div class="options-list">${optsHtml}</div>
+            ${expHtml}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function submitVocabQuiz() {
+      if (currentVocabQuiz.submitted) return;
+      clearInterval(currentVocabQuiz.timerInterval);
+      currentVocabQuiz.submitted = true;
+
+      let correctCount = 0;
+      currentVocabQuiz.items.forEach(item => {
+        const ans = currentVocabQuiz.userAnswers[item.qId];
+        if (ans === item.answer) {
+          correctCount++;
+        } else {
+          const prev = state.weakVocab[item.vocabId] || { count: 0 };
+          state.weakVocab[item.vocabId] = {
+            count: prev.count + 1,
+            updatedAt: formatDate(new Date())
+          };
+          delete state.masteredVocab[item.vocabId];
+        }
+      });
+
+      const total = currentVocabQuiz.items.length;
+      const scorePct = Math.round((correctCount / total) * 100);
+
+      state.vocabHistory.push({
+        date: `${formatDate(new Date())} ${new Date().toTimeString().slice(0, 5)}`,
+        mode: currentVocabQuiz.modeLabel,
+        correct: correctCount,
+        total,
+        score: scorePct
+      });
+
+      saveState();
+      updateVocabStats();
+      renderVocabQuizItems();
+
+      const banner = document.getElementById("vq-result-banner");
+      banner.style.display = "flex";
+      banner.className = "notice";
+      banner.innerHTML = `
+        <div>
+          <strong style="font-size:1.08rem;">🎉 單字測驗完成！答對 ${correctCount} / ${total} 題（正確率 ${scorePct}%）</strong>
+          <div style="font-size:0.86rem; margin-top:0.2rem;">答錯的單字已自動收錄至「待加強單字」，您可隨時點擊題目旁的「🔊 聽單字發音」加深記憶。</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="switchVocabSubtab('card')">🃏 去翻轉閃卡複習</button>
+      `;
+
+      document.getElementById("vq-submit-btn").style.display = "none";
+      document.getElementById("vq-retry-btn").style.display = "inline-flex";
+    }
+
+    function resetVocabQuizView() {
+      clearInterval(currentVocabQuiz.timerInterval);
+      document.getElementById("vq-setup-card").style.display = "block";
+      document.getElementById("vq-active-card").style.display = "none";
+    }
+
+    // Flashcards
+    function initFlashcards() {
+      const filter = document.getElementById("fc-filter-cat")?.value || "ALL";
+      let list = [...state.vocab];
+      if (filter === "WEAK") {
+        const weakIds = Object.keys(state.weakVocab || {});
+        list = state.vocab.filter(v => weakIds.includes(v.id));
+      } else if (filter !== "ALL") {
+        list = state.vocab.filter(v => v.category === filter);
+      }
+      if (list.length === 0) {
+        list = [...state.vocab];
+      }
+      fcState = { list, index: 0, flipped: false };
+      renderCurrentFlashcard();
+    }
+
+    function renderCurrentFlashcard() {
+      const stage = document.getElementById("fc-stage");
+      if (!stage || fcState.list.length === 0) return;
+      const v = fcState.list[fcState.index];
+      const isMastered = !!state.masteredVocab[v.id];
+      const isWeak = !!state.weakVocab[v.id];
+      const fullSentence = v.sentence.replace("_______", `[ ${v.options[v.answer]} ]`);
+
+      stage.innerHTML = `
+        <div class="flashcard-box" onclick="flipFlashcard()">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+              <span class="tag">${v.category}（${fcState.index + 1} / ${fcState.list.length}）</span>
+              <div style="display:flex; gap:0.4rem; align-items:center;">
+                ${isMastered ? '<span class="tag" style="background:var(--success-bg);color:var(--success);">⭐ 已熟記</span>' : ""}
+                ${isWeak ? '<span class="tag mock">📌 待加強</span>' : ""}
+                <button class="audio-btn" onclick="speakWord('${v.word.replace(/'/g, "\'")}', event)">🔊 美式發音</button>
+              </div>
+            </div>
+            <div class="fc-word-title">
+              <span>${v.word}</span>
+              <span class="fc-pos">${v.pos}</span>
+            </div>
+            ${fcState.flipped ? `
+              <div class="fc-meaning">${v.meaning}</div>
+              <div style="font-size:0.9rem; color:var(--navy-700); font-weight:600; margin-bottom:0.4rem;">🔗 高頻搭配：${v.collocation}</div>
+              <div class="fc-example">
+                <div><strong>多益實戰例句：</strong>${fullSentence}</div>
+                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:0.3rem;">💡 ${v.explanation}</div>
+              </div>
+            ` : `
+              <div style="margin-top:2.2rem; color:var(--text-muted); font-size:0.95rem;">
+                👆 點擊卡片翻面檢視「中文語意、常考搭配詞與多益實戰例句」
+              </div>
+            `}
+          </div>
+          <div style="margin-top:1.2rem; font-size:0.8rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+            <span>單字編號：${v.id}</span>
+            <span>點擊卡片任意處切換正反面</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function flipFlashcard() {
+      fcState.flipped = !fcState.flipped;
+      renderCurrentFlashcard();
+    }
+
+    function prevFlashcard() {
+      if (fcState.list.length === 0) return;
+      fcState.index = (fcState.index - 1 + fcState.list.length) % fcState.list.length;
+      fcState.flipped = false;
+      renderCurrentFlashcard();
+    }
+
+    function nextFlashcard() {
+      if (fcState.list.length === 0) return;
+      fcState.index = (fcState.index + 1) % fcState.list.length;
+      fcState.flipped = false;
+      renderCurrentFlashcard();
+    }
+
+    function toggleCurrentCardMastered() {
+      if (fcState.list.length === 0) return;
+      const v = fcState.list[fcState.index];
+      if (state.masteredVocab[v.id]) {
+        delete state.masteredVocab[v.id];
+        showToast(`已取消「${v.word}」的熟記標記`);
+      } else {
+        state.masteredVocab[v.id] = true;
+        delete state.weakVocab[v.id];
+        showToast(`⭐ 已將「${v.word}」標記為熟記單字！`);
+      }
+      saveState();
+      updateVocabStats();
+      renderCurrentFlashcard();
+      renderVocabTable();
+    }
+
+    function toggleCurrentCardWeak() {
+      if (fcState.list.length === 0) return;
+      const v = fcState.list[fcState.index];
+      if (state.weakVocab[v.id]) {
+        delete state.weakVocab[v.id];
+        showToast(`已將「${v.word}」從待加強清單移除`);
+      } else {
+        state.weakVocab[v.id] = { count: 1, updatedAt: formatDate(new Date()) };
+        delete state.masteredVocab[v.id];
+        showToast(`📌 已將「${v.word}」加入待加強單字！`);
+      }
+      saveState();
+      updateVocabStats();
+      renderCurrentFlashcard();
+      renderVocabTable();
+    }
+
+    function toggleVocabStatusById(vocabId, type) {
+      if (type === "master") {
+        if (state.masteredVocab[vocabId]) delete state.masteredVocab[vocabId];
+        else {
+          state.masteredVocab[vocabId] = true;
+          delete state.weakVocab[vocabId];
+        }
+      } else {
+        if (state.weakVocab[vocabId]) delete state.weakVocab[vocabId];
+        else {
+          state.weakVocab[vocabId] = { count: 1, updatedAt: formatDate(new Date()) };
+          delete state.masteredVocab[vocabId];
+        }
+      }
+      saveState();
+      updateVocabStats();
+      renderVocabTable();
+      renderCurrentFlashcard();
+    }
+
+    function renderVocabTable() {
+      const search = (document.getElementById("vc-search")?.value || "").toLowerCase();
+      const cat = document.getElementById("vc-list-cat")?.value || "ALL";
+
+      const filtered = state.vocab.filter(v => {
+        const matchCat = cat === "ALL" || v.category === cat;
+        const text = `${v.id} ${v.word} ${v.pos} ${v.meaning} ${v.collocation} ${v.sentence}`.toLowerCase();
+        return matchCat && text.includes(search);
+      });
+
+      const countEl = document.getElementById("vc-table-count");
+      if (countEl) countEl.textContent = filtered.length;
+
+      const tbody = document.getElementById("vc-table-body");
+      if (!tbody) return;
+      tbody.innerHTML = filtered.map(v => {
+        const isMaster = !!state.masteredVocab[v.id];
+        const isWeak = !!state.weakVocab[v.id];
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:800; font-size:1rem; color:var(--navy-900);">${v.word} <span style="color:var(--accent-gold); font-size:0.82rem;">${v.pos}</span></div>
+              <button class="audio-btn" style="margin-top:0.3rem;" onclick="speakWord('${v.word.replace(/'/g, "\'")}', event)">🔊 發音</button>
+            </td>
+            <td><span class="tag">${v.category}</span></td>
+            <td>
+              <div style="font-weight:700;">${v.meaning}</div>
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;">${v.collocation}</div>
+            </td>
+            <td>
+              <div style="font-size:0.9rem;">${v.sentence.replace("_______", `<strong><u>${v.options[v.answer]}</u></strong>`)}</div>
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;">💡 ${v.explanation}</div>
+            </td>
+            <td>
+              <div style="display:flex; flex-direction:column; gap:0.35rem;">
+                <button class="btn btn-sm ${isMaster ? "btn-primary" : "btn-outline"}" onclick="toggleVocabStatusById('${v.id}', 'master')">${isMaster ? "⭐ 已熟記" : "標記熟記"}</button>
+                <button class="btn btn-sm ${isWeak ? "btn-danger" : "btn-outline"}" onclick="toggleVocabStatusById('${v.id}', 'weak')">${isWeak ? "📌 待加強" : "標記弱點"}</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    async function generateVocabWithGemini() {
+      const apiKey = state.settings.geminiApiKey || document.getElementById("set-gemini-key")?.value?.trim();
+      if (!apiKey) {
+        showToast("⚠️ 請先在「⚙️ 設定」頁面填入您的 Gemini API Key！");
+        switchTab("settings");
+        return;
+      }
+
+      const cat = document.getElementById("ai-vocab-cat").value;
+      const level = document.getElementById("ai-vocab-level").value;
+      const rawModel = state.settings.geminiModel || "gemini-3.8-flash";
+      const model = rawModel.startsWith("gemini-2.") ? "gemini-3.8-flash" : rawModel;
+      const statusEl = document.getElementById("ai-vocab-status");
+      const btn = document.getElementById("btn-ai-vocab");
+
+      btn.disabled = true;
+      statusEl.textContent = `⏳ Gemini (${model}) 正在為您生成 5 個【${cat}｜${level}】新單字與填空考題...`;
+
+      const existingWords = state.vocab.map(v => v.word).join(", ");
+      const prompt = `你是一位專業的多益 (TOEIC) 詞彙與命題老師。請針對目標多益 600 分的台灣考生，設計 5 個全新的多益高頻單字與 Part 5 句子填空題（主題：${cat}，難度：${level}）。
+請避免重複以下已存在單字：${existingWords}。
+請嚴格只回傳 JSON 陣列（不要加上 markdown 語法），每個元素格式如下：
+[
+  {
+    "word": "英文單字",
+    "pos": "詞性 (如 n. / v. / adj. / adv.)",
+    "meaning": "繁體中文核心字義",
+    "category": "${cat}",
+    "collocation": "多益常考搭配詞與中文翻譯",
+    "sentence": "多益 Part 5 英文填空例句（請用 _______ 標示空格）",
+    "options": {"A": "選項A", "B": "選項B", "C": "選項C", "D": "選項D"},
+    "answer": "正確選項字母(A/B/C/D)",
+    "explanation": "繁體中文詳解"
+  }
+]`;
+
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              responseMimeType: "application/json"
+            }
+          })
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`API 回應錯誤 (${response.status}): ${errText}`);
+        }
+
+        const data = await response.json();
+        const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+        const cleaned = rawText.replace(/^```json/i, "").replace(/```$/i, "").trim();
+        const newWords = JSON.parse(cleaned);
+
+        if (!Array.isArray(newWords) || newWords.length === 0) {
+          throw new Error("回傳格式非有效單字陣列");
+        }
+
+        const startIdx = state.vocab.length + 1;
+        newWords.forEach((item, idx) => {
+          const vId = `V${String(startIdx + idx).padStart(3, "0")}`;
+          state.vocab.push({
+            id: vId,
+            word: item.word || "vocabulary",
+            pos: item.pos || "n.",
+            meaning: item.meaning || "",
+            category: item.category || cat,
+            collocation: item.collocation || "",
+            sentence: item.sentence || "",
+            options: item.options || { A: "", B: "", C: "", D: "" },
+            answer: (item.answer || "A").toUpperCase().trim().slice(0, 1),
+            explanation: item.explanation || ""
+          });
+        });
+
+        saveState();
+        updateVocabStats();
+        renderVocabTable();
+        initFlashcards();
+        statusEl.textContent = `🎉 成功新增 ${newWords.length} 個多益單字！（目前單字庫共 ${state.vocab.length} 字）`;
+        showToast(`🎉 已新增 ${newWords.length} 個多益單字與考題！`);
+      } catch (e) {
+        console.error(e);
+        statusEl.textContent = `❌ 生成失敗：${e.message}`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function downloadHtmlFile() {
+      const fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "index.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("📥 已開始下載 index.html！可直接雙擊開啟或上傳至 GitHub。");
+    }
+
     function exportBackup() {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -2167,15 +3511,22 @@
       URL.revokeObjectURL(url);
     }
 
-    // Initialize on load
-    window.addEventListener("DOMContentLoaded", () => {
+    function initApp() {
+      if (window.__appInitialized) return;
+      window.__appInitialized = true;
       loadState();
       updateHeaderAndBadges();
       populateSettingsForm();
       renderToday();
       renderPlan();
+      renderVocabTab();
       renderQuestionBank();
-    });
+    }
+    if (document.readyState === "loading") {
+      window.addEventListener("DOMContentLoaded", initApp);
+    } else {
+      initApp();
+    }
   </script>
 </body>
 </html>
